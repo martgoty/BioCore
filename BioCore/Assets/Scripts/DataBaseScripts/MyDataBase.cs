@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 using System.IO;
-using Unity.VisualScripting;
+using Unity.Burst.CompilerServices;
 
 static class MyDataBase 
 {

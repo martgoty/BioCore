@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4963624327700007940}
   - component: {fileID: 4963624327700007941}
   - component: {fileID: 4963624327700007942}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: WallLong
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1954571541
+  m_SortingLayerID: -1240522145
   m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 1807676653, guid: 0234a1bf9d350d247a74d1d2f701e577, type: 3}

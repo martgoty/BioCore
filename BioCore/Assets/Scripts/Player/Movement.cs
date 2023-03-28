@@ -19,9 +19,9 @@ public class Movement : MonoBehaviour
 
     [Header("Ground Check")]
     [Space]
-    [SerializeField][Range(0f, 1f)] private float _checkSphereRadius;
+    [Range(0f, 1f)] private float _checkSphereRadius;
     [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] private Vector2 _checkSphereCenter;
+    [SerializeField] public Vector2 _checkSphereCenter;
 
     private void Awake()
     {
