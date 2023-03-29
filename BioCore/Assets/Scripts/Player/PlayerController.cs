@@ -1,6 +1,5 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Movement))]
 [RequireComponent(typeof(AudioSource))]
@@ -11,10 +10,10 @@ public class PlayerController : MonoBehaviour
     private Animator _animator;
     private Movement _movement;
 
-    private float horizontalInput;
-    private float verticalInput;
-    private bool isJumpPressed;
-    private bool jumpStop;
+    private DefaultControls _controls;
+    private float _horizontalInput;
+    private bool _isJumpPressed;
+    private bool _jumpStop;
 
     private void Awake()
     {
@@ -22,52 +21,61 @@ public class PlayerController : MonoBehaviour
         _movement = GetComponent<Movement>();
         _rb = GetComponent<Rigidbody2D>();
         _audio = GetComponent<AudioSource>();
+        _controls = new DefaultControls();
+        
     }
 
+    private void OnEnable()
+    {
+        _controls.Enable();
+        _controls.Main.Jump.performed += context => Jump(true);
+        _controls.Main.Jump.canceled += context => Jump(false);
+
+    }
+
+    private void OnDisable()
+    {
+        _controls.Disable();
+    }
 
 
     private void Update()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal") * Time.fixedDeltaTime;
-        verticalInput = Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime;
+        _horizontalInput = _controls.Main.Move.ReadValue<float>() * Time.fixedDeltaTime;
 
-        if (!_audio.isPlaying && horizontalInput != 0)
+        if (!_audio.isPlaying && _horizontalInput != 0)
         {
             _audio.Play();
         }
 
         AnimationsControl();
 
-        ButtonsClickCheck();
-
     }
     private void FixedUpdate()
     {
-        _movement.Flip(horizontalInput);
-        _movement.PlayerMove(horizontalInput, isJumpPressed, jumpStop);
-        isJumpPressed = false;
-        jumpStop = false;
+        _movement.Flip(_horizontalInput);
+        _movement.PlayerMove(_horizontalInput, _isJumpPressed, _jumpStop);
+        _isJumpPressed = false;
+        _jumpStop = false;
 
     }
 
-
-
     private void AnimationsControl()
     {
-        _animator.SetFloat("_velocityX", Mathf.Abs(horizontalInput));
+        _animator.SetFloat("_velocityX", Mathf.Abs(_horizontalInput));
         _animator.SetFloat("_velocityY", _rb.velocity.y);
         _animator.SetBool("_isGrounded", _movement.IsGrounded());
     }
 
-    private void ButtonsClickCheck()
+    private void Jump(bool isPressed)
     {
-        if (Input.GetButtonDown("Jump"))
+        if (isPressed)
         {
-            isJumpPressed = true;
+            _isJumpPressed = true;
         }
-        else if (Input.GetButtonUp("Jump"))
+        else
         {
-            jumpStop = true;
+            _jumpStop = true;
         }
     }
 
