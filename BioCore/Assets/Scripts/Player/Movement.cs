@@ -13,7 +13,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float _jumpForce;//сила прыжка
     [SerializeField] private float _jumpDeceleration;//резкость динамического прыжка
     [SerializeField] private float _maxFallSpeed;//максимальная скорость падения
-    [SerializeField] private bool _isRight;
+    [SerializeField] public bool _isRight;
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody2D;
 

@@ -3,17 +3,21 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Movement))]
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(PlayerAttack))]
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private AudioSource _audio;
     private Animator _animator;
     private Movement _movement;
+    private DefaultControls _controls;//скрипт для управления
+    private PlayerAttack _attackControll;//скрипт для создания точки атаки
 
-    private DefaultControls _controls;
     private float _horizontalInput;
+    private float _verticalInput;
     private bool _isJumpPressed;
-    private bool _jumpStop;
+    private bool _jumpStop;//контроль динамического прыжка
+    private PlayerAttack.AttackDirections _lastAttackDir;//переменная для возвращения напрвления атаки в исходное состояние
 
     private void Awake()
     {
@@ -22,14 +26,16 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _audio = GetComponent<AudioSource>();
         _controls = new DefaultControls();
+        _attackControll = GetComponent<PlayerAttack>();
         
     }
 
     private void OnEnable()
     {
+        //подключение управления
         _controls.Enable();
-        _controls.Main.Jump.performed += context => Jump(true);
-        _controls.Main.Jump.canceled += context => Jump(false);
+        _controls.Main.Jump.performed += context => Jump(true);//когда клавиша прыжка нажата
+        _controls.Main.Jump.canceled += context => Jump(false);//когда клавиша прыжка отпущена
 
     }
 
@@ -38,15 +44,29 @@ public class PlayerController : MonoBehaviour
         _controls.Disable();
     }
 
+    private void Start()
+    {
+        if (_movement._isRight)
+        {
+            _lastAttackDir = PlayerAttack.AttackDirections.Right;
+        }
+        else
+        {
+            _lastAttackDir = PlayerAttack.AttackDirections.Left;
+        }
+    }
 
     private void Update()
     {
         _horizontalInput = _controls.Main.Move.ReadValue<float>() * Time.fixedDeltaTime;
+        _verticalInput = _controls.Main.Vertical.ReadValue<float>() * Time.fixedDeltaTime;
 
         if (!_audio.isPlaying && _horizontalInput != 0)
         {
             _audio.Play();
         }
+
+        ChangeAttackDirection();
 
         AnimationsControl();
 
@@ -76,6 +96,38 @@ public class PlayerController : MonoBehaviour
         else
         {
             _jumpStop = true;
+        }
+    }
+
+    private void ChangeAttackDirection()
+    {
+        if(_verticalInput > 0)
+        {
+            _attackControll.attackState = PlayerAttack.AttackDirections.Up;
+        }
+        else if(_verticalInput < 0)
+        {
+            _attackControll.attackState = PlayerAttack.AttackDirections.Down;
+        }
+        else
+        {
+           
+            if(_horizontalInput < 0)
+            {
+                _attackControll.attackState = PlayerAttack.AttackDirections.Left;
+                _lastAttackDir = PlayerAttack.AttackDirections.Left;
+
+            }
+            else if(_horizontalInput > 0)
+            {
+                _attackControll.attackState = PlayerAttack.AttackDirections.Right;
+                _lastAttackDir = PlayerAttack.AttackDirections.Right;
+
+            }
+            else
+            {
+                _attackControll.attackState = _lastAttackDir;
+            }
         }
     }
 

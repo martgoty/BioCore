@@ -8,10 +8,11 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private Vector2 _attackPointUp;
     [SerializeField] private Vector2 _attackPointDown;
-    [SerializeField] private Vector2 _attackPointHorizontal;
+    [SerializeField] private Vector2 _attackPointRight;
+    [SerializeField] private Vector2 _attackPointLeft;
     [SerializeField] private float _attackRadius;
 
-    [HideInInspector]public AttackDirections _attackState;
+    [HideInInspector] public AttackDirections attackState;
 
 
     private bool isStart = false;
@@ -23,13 +24,13 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        switch (_attackState)
+        switch (attackState)
         {
             case AttackDirections.Left:
-                hit = Physics2D.OverlapCircleAll(_attackPointHorizontal +  new Vector2(transform.position.x, transform.position.y), _attackRadius, _enemyLayer);
+                hit = Physics2D.OverlapCircleAll(_attackPointLeft +  new Vector2(transform.position.x, transform.position.y), _attackRadius, _enemyLayer);
                 break;
             case AttackDirections.Right:
-                hit = Physics2D.OverlapCircleAll(new Vector2(_attackPointHorizontal.x * (-1) + transform.position.x, _attackPointHorizontal.y + transform.position.y), _attackRadius, _enemyLayer);
+                hit = Physics2D.OverlapCircleAll(_attackPointRight + new Vector2(transform.position.x, transform.position.y), _attackRadius, _enemyLayer, _attackRadius, _enemyLayer);
                 break;
             case AttackDirections.Down:
                 hit = Physics2D.OverlapCircleAll(_attackPointDown + new Vector2(transform.position.x, transform.position.y), _attackRadius, _enemyLayer);
@@ -60,13 +61,13 @@ public class PlayerAttack : MonoBehaviour
 
         if (isStart)
         {
-            switch (_attackState)
+            switch (attackState)
             {
                 case AttackDirections.Left:
-                    Gizmos.DrawWireSphere(_attackPointHorizontal + new Vector2(transform.position.x, transform.position.y), _attackRadius);
+                    Gizmos.DrawWireSphere(_attackPointLeft +  new Vector2(transform.position.x, transform.position.y), _attackRadius);
                     break;
                 case AttackDirections.Right:
-                    Gizmos.DrawWireSphere(new Vector2(_attackPointHorizontal.x * (-1) + transform.position.x, _attackPointHorizontal.y + transform.position.y), _attackRadius);
+                    Gizmos.DrawWireSphere(_attackPointRight + new Vector2(transform.position.x, transform.position.y), _attackRadius);
                     break;
                 case AttackDirections.Down:
                     Gizmos.DrawWireSphere(_attackPointDown + new Vector2(transform.position.x, transform.position.y), _attackRadius);
@@ -78,8 +79,8 @@ public class PlayerAttack : MonoBehaviour
         }
         else
         {
-            Gizmos.DrawWireSphere(_attackPointHorizontal + new Vector2(transform.position.x, transform.position.y), _attackRadius);
-            Gizmos.DrawWireSphere(new Vector2(_attackPointHorizontal.x * (-1) + transform.position.x, _attackPointHorizontal.y + transform.position.y), _attackRadius);
+            Gizmos.DrawWireSphere(_attackPointLeft + new Vector2(transform.position.x, transform.position.y), _attackRadius);
+            Gizmos.DrawWireSphere(_attackPointRight + new Vector2(transform.position.x, transform.position.y), _attackRadius);
             Gizmos.DrawWireSphere(_attackPointDown + new Vector2(transform.position.x, transform.position.y), _attackRadius);
             Gizmos.DrawWireSphere(_attackPointUp + new Vector2(transform.position.x, transform.position.y), _attackRadius);
 
