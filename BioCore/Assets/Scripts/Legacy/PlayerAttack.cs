@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [SerializeField] float _force;
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private Vector2 _attackPointUp;
     [SerializeField] private Vector2 _attackPointDown;
@@ -40,14 +41,20 @@ public class PlayerAttack : MonoBehaviour
                 break;
         }
 
-
-        if (hit != null)
+        for (int i = 0; i < hit.Length; i++)
         {
-            for(int i = 0; i < hit.Length; i++)
+            Vector2 dir;
+            if(transform.position.x > hit[i].transform.position.x)
             {
-                hit[i].gameObject.SetActive(false);  
+                dir = new Vector2(-1, 0.5f);
+            }
+            else
+            {
+                dir = new Vector2(1, 0.5f);
             }
 
+
+            hit[i].GetComponent<GetDamage>().GetDamagePlayer(dir, _force);
         }
 
 

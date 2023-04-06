@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyMovement))]
 public class PingPongAI : MonoBehaviour
 {
     [Header("Directional Ray")]
@@ -9,17 +10,19 @@ public class PingPongAI : MonoBehaviour
     [SerializeField] private float _flipDistance;
     [SerializeField] private Vector2 _dirRayOffset;
     [SerializeField] private LayerMask _obstacleLayer;
-    [SerializeField] private string _animName;
+    [SerializeField] private string _animatorParametrsName;
     private bool _isRight;
 
     private SpriteRenderer _spriteRenderer;
     private EnemyMovement _movement;
+    private Animator _animator;
     private RaycastHit2D wallCheckHit;
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _movement = GetComponent<EnemyMovement>();
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -46,10 +49,13 @@ public class PingPongAI : MonoBehaviour
         if (_isRight)
         {
             _spriteRenderer.flipX = true;
+            _animator.SetBool(_animatorParametrsName, true);
         }
         else
         {
             _spriteRenderer.flipX = false;
+            _animator.SetBool(_animatorParametrsName, false);
+
         }
     }
 

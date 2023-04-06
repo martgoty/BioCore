@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Movement))]
-[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(PlayerAttack))]
+[RequireComponent(typeof(AudioSource))]
+
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rb;
@@ -23,7 +24,8 @@ public class PlayerController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _movement = GetComponent<Movement>();
-        _rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();  _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+       
         _audio = GetComponent<AudioSource>();
         _controls = new DefaultControls();
         _attackControll = GetComponent<PlayerAttack>();
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
         _controls.Enable();
         _controls.Main.Jump.performed += context => Jump(true);//когда клавиша прыжка нажата
         _controls.Main.Jump.canceled += context => Jump(false);//когда клавиша прыжка отпущена
+        _controls.Main.Attack.performed += context => Attack();
 
     }
 
@@ -46,7 +49,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        if (_movement._isRight)
+        if (_movement.IsRight)
         {
             _lastAttackDir = PlayerAttack.AttackDirections.Right;
         }
@@ -61,7 +64,7 @@ public class PlayerController : MonoBehaviour
         _horizontalInput = _controls.Main.Move.ReadValue<float>() * Time.fixedDeltaTime;
         _verticalInput = _controls.Main.Vertical.ReadValue<float>() * Time.fixedDeltaTime;
 
-        if (!_audio.isPlaying && _horizontalInput != 0)
+        if (!_audio.isPlaying && _horizontalInput != 0 && _movement.IsGrounded())
         {
             _audio.Play();
         }
@@ -78,6 +81,11 @@ public class PlayerController : MonoBehaviour
         _isJumpPressed = false;
         _jumpStop = false;
 
+    }
+
+    private void Attack()
+    {
+        _attackControll.Attack();
     }
 
     private void AnimationsControl()

@@ -13,17 +13,24 @@ public class Movement : MonoBehaviour
     [SerializeField] private float _jumpForce;//сила прыжка
     [SerializeField] private float _jumpDeceleration;//резкость динамического прыжка
     [SerializeField] private float _maxFallSpeed;//максимальная скорость падения
-    [SerializeField] public bool _isRight;
+    [SerializeField] private bool _isRight;
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody2D;
 
+    public bool IsRight
+    {
+        get { return _isRight; }
+        set { _isRight = value; }
+    }
+
+
     [Header("Ground Check")]
     [Space]
-    [Range(0f, 1f)] private float _checkSphereRadius;
+    [SerializeField][Range(0f, 1f)] private float _checkSphereRadius;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] public Vector2 _checkSphereCenter;
 
-    private void Awake()
+    private void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _rigidbody2D = GetComponent<Rigidbody2D>();

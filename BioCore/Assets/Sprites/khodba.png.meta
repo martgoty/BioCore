@@ -134,7 +134,7 @@ TextureImporter:
         width: 324
         height: 321
       alignment: 9
-      pivot: {x: 0.45675433, y: 0.5387997}
+      pivot: {x: 0.51207685, y: 0.5345045}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,7 +155,7 @@ TextureImporter:
         width: 324
         height: 321
       alignment: 9
-      pivot: {x: 0.4327291, y: 0.5533497}
+      pivot: {x: 0.4923073, y: 0.55764496}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -176,7 +176,7 @@ TextureImporter:
         width: 324
         height: 321
       alignment: 9
-      pivot: {x: 0.47116956, y: 0.5290995}
+      pivot: {x: 0.5307478, y: 0.5290995}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -197,7 +197,7 @@ TextureImporter:
         width: 324
         height: 321
       alignment: 9
-      pivot: {x: 0.42311868, y: 0.5630495}
+      pivot: {x: 0.49546382, y: 0.5673448}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -220,11 +220,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      khodba_0: -259037799
+      khodba_1: 935934514
+      khodba_2: -2065739410
       khodba_3: 1212211238
       khodba_4: -1232547431
-      khodba_0: -259037799
-      khodba_2: -2065739410
-      khodba_1: 935934514
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -9,7 +9,7 @@ public class ParticleControllSystem : MonoBehaviour
     private Movement _movement;
     private bool _isWaiting = false;
 
-    private void Awake()
+    private void Start()
     {
         _system = GetComponent<ParticleSystem>();
         _movement = GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>();
