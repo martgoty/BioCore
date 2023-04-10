@@ -5,12 +5,20 @@ using UnityEngine.Events;
 
 public class Trigger : MonoBehaviour
 {
-    public UnityEvent _event;
+    public UnityEvent enterEvent;
+    public UnityEvent exitEvent;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            _event.Invoke();
+            enterEvent.Invoke();
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            exitEvent.Invoke();
         }
     }
 }
