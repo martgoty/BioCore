@@ -10,8 +10,10 @@ public class AdvancedVCamFunctional : MonoBehaviour
     [SerializeField] private Vector3 _offsetPassive;
     [SerializeField, Range(0,1)] private float _xSmoothDamp;
     [SerializeField, Range(0,1)] private float _ySmoothDamp;
-    [SerializeField] private bool _isDisableYFollow;
+    [SerializeField] private bool _drawGizmos;
+
     private GameObject _player;
+    private bool _isDisableYFollow;
     private float _oldPlayerPositionY;
     private float _xVelocity;
     private float _yVelocity;
@@ -25,25 +27,29 @@ public class AdvancedVCamFunctional : MonoBehaviour
     }
     private void Update()
     {
-            if(_player.GetComponent<Movement>().IsRight)
-            {
-                _xPos = Mathf.SmoothDamp(transform.position.x, _player.transform.position.x + _offsetActive.x, ref _xVelocity, _xSmoothDamp);
-            }
-            else
-            {
-                _xPos = Mathf.SmoothDamp(transform.position.x, _player.transform.position.x - _offsetActive.x, ref _xVelocity, _xSmoothDamp);
-            }
-            
+        if (_oldPlayerPositionY > _player.transform.position.y)
+        {
+            _oldPlayerPositionY = _player.transform.position.y;
+        }
+        if (_player.GetComponent<Movement>().IsRight)
+        {
+            _xPos = Mathf.SmoothDamp(transform.position.x, _player.transform.position.x + _offsetActive.x, ref _xVelocity, _xSmoothDamp);
+        }
+        else
+        {
+            _xPos = Mathf.SmoothDamp(transform.position.x, _player.transform.position.x - _offsetActive.x, ref _xVelocity, _xSmoothDamp);
+        }
 
-            if (_isDisableYFollow)
-            {
-                _yPos = Mathf.SmoothDamp(transform.position.y, _oldPlayerPositionY + _offsetPassive.y, ref _yVelocity, _ySmoothDamp);
-            }
-            else
-            {
-                _yPos = Mathf.SmoothDamp(transform.position.y, _player.transform.position.y + _offsetActive.y, ref _yVelocity, _ySmoothDamp);
-            }
-            transform.position = new Vector3(_xPos, _yPos, transform.position.z);
+
+        if (_isDisableYFollow)
+        {
+            _yPos = Mathf.SmoothDamp(transform.position.y, _oldPlayerPositionY + _offsetPassive.y, ref _yVelocity, _ySmoothDamp);
+        }
+        else
+        {
+            _yPos = Mathf.SmoothDamp(transform.position.y, _player.transform.position.y + _offsetActive.y, ref _yVelocity, _ySmoothDamp);
+        }
+        transform.position = new Vector3(_xPos, _yPos, transform.position.z);
     }
 
     public void DisableYFollow()
@@ -59,11 +65,35 @@ public class AdvancedVCamFunctional : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawCube(transform.position + _offsetActive, new Vector3(0.2f, 0.2f, 0.2f));
+        if (_drawGizmos)
+        {
+            Gizmos.color = Color.yellow;
+            if (_player != null)
+            {
+                if (_player.GetComponent<Movement>().IsRight)
+                {
+                    Gizmos.DrawCube(new Vector3(_player.transform.position.x + _offsetActive.x, _player.transform.position.y + _offsetActive.y), new Vector3(0.2f, 0.2f, 0.2f));
+                }
+                else
+                {
+                    Gizmos.DrawCube(new Vector3(_player.transform.position.x - _offsetActive.x, _player.transform.position.y + _offsetActive.y), new Vector3(0.2f, 0.2f, 0.2f));
+                }
+            }
 
-        Gizmos.color = Color.black;
-        Gizmos.DrawCube(transform.position + _offsetPassive, new Vector3(0.2f, 0.2f, 0.2f));
+            Gizmos.color = Color.black;
+            if (_player != null)
+            {
+                if (_player.GetComponent<Movement>().IsRight)
+                {
+                    Gizmos.DrawCube(new Vector3(_player.transform.position.x + _offsetPassive.x, _player.transform.position.y + _offsetPassive.y), new Vector3(0.2f, 0.2f, 0.2f));
+                }
+                else
+                {
+                    Gizmos.DrawCube(new Vector3(_player.transform.position.x - _offsetPassive.x, _player.transform.position.y + _offsetPassive.y), new Vector3(0.2f, 0.2f, 0.2f));
+                }
+            }
+        }
+        
 
     }
 }
