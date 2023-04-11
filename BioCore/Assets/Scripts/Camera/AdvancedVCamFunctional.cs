@@ -25,27 +25,25 @@ public class AdvancedVCamFunctional : MonoBehaviour
     }
     private void Update()
     {
-        if (_player.GetComponent<Movement>().IsRight)
-        {
-            _xPos = Mathf.SmoothDamp(transform.position.x + _offsetActive.x, _player.transform.position.x + _offsetActive.x, ref _xVelocity, _xSmoothDamp);
+            if(_player.GetComponent<Movement>().IsRight)
+            {
+                _xPos = Mathf.SmoothDamp(transform.position.x, _player.transform.position.x + _offsetActive.x, ref _xVelocity, _xSmoothDamp);
+            }
+            else
+            {
+                _xPos = Mathf.SmoothDamp(transform.position.x, _player.transform.position.x - _offsetActive.x, ref _xVelocity, _xSmoothDamp);
+            }
+            
 
             if (_isDisableYFollow)
-                _yPos = Mathf.SmoothDamp(transform.position.y + _offsetPassive.y, _oldPlayerPositionY + _offsetPassive.y, ref _yVelocity, _ySmoothDamp);
+            {
+                _yPos = Mathf.SmoothDamp(transform.position.y, _oldPlayerPositionY + _offsetPassive.y, ref _yVelocity, _ySmoothDamp);
+            }
             else
-                _yPos = Mathf.SmoothDamp(transform.position.y + _offsetActive.y, _player.transform.position.y + _offsetActive.y, ref _yVelocity, _ySmoothDamp);
+            {
+                _yPos = Mathf.SmoothDamp(transform.position.y, _player.transform.position.y + _offsetActive.y, ref _yVelocity, _ySmoothDamp);
+            }
             transform.position = new Vector3(_xPos, _yPos, transform.position.z);
-        }
-        else
-        {
-            _xPos = Mathf.SmoothDamp(transform.position.x + _offsetActive.x , _player.transform.position.x - _offsetActive.x, ref _xVelocity, _xSmoothDamp);
-
-            if (_isDisableYFollow)
-                _yPos = Mathf.SmoothDamp(transform.position.y + _offsetPassive.x, _oldPlayerPositionY + _offsetPassive.y, ref _yVelocity, _ySmoothDamp);
-            else
-                _yPos = Mathf.SmoothDamp(transform.position.y + _offsetActive.x , _player.transform.position.y + _offsetActive.y, ref _yVelocity, _ySmoothDamp);
-
-            transform.position = new Vector3(_xPos, _yPos, transform.position.z);
-        }
     }
 
     public void DisableYFollow()
