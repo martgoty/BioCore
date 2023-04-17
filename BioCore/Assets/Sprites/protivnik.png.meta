@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0f552910297f02b4eb18da9c85ede73a
+guid: 6dc6b2ab0d504b045a3b00ba9fb8f5b7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -106,7 +106,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -117,106 +117,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pryzhok__kopia_0
+      name: protivnik_0
       rect:
         serializedVersion: 2
-        x: 34
-        y: 1193
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.44124514, y: 0.5492996}
+        x: 139
+        y: 1536
+        width: 370
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b30cffe132f446e4abd5fb3b65dad3a3
-      internalID: -1524086712
+      spriteID: 60dc7072687364947af7ef7281fd1e13
+      internalID: -597370149
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pryzhok__kopia_1
+      name: protivnik_1
       rect:
         serializedVersion: 2
-        x: 330
-        y: 1192
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.44907913, y: 0.5230064}
+        x: 648
+        y: 1544
+        width: 371
+        height: 402
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 38a0450c4d1e3f94e9386a5b12010600
-      internalID: 1755917332
+      spriteID: 77cb5249afc924d4fbf9a01047270388
+      internalID: 210228206
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pryzhok__kopia_2
+      name: protivnik_2
       rect:
         serializedVersion: 2
-        x: 625
-        y: 1191
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.43732798, y: 0.5953131}
+        x: 1096
+        y: 1546
+        width: 369
+        height: 408
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49cef1cc5ab2d6648bdc2c4c6b27dbf0
-      internalID: 1033129383
+      spriteID: 940749dd5ee77934783cb27eead2c4f4
+      internalID: 772254725
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pryzhok__kopia_3
+      name: protivnik_3
       rect:
         serializedVersion: 2
-        x: 928
-        y: 1190
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.45299584, y: 0.5953131}
+        x: 1532
+        y: 1537
+        width: 366
+        height: 403
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f016744e1fcdf7d4ab64d914d7ed28fd
-      internalID: 532057229
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pryzhok__kopia_4
-      rect:
-        serializedVersion: 2
-        x: 1239
-        y: 1189
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.4216597, y: 0.60517305}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e7a37a554f2139d419ca8755672a625c
-      internalID: 446914633
+      spriteID: e3f24d1c34621624cb38437aa95f3336
+      internalID: 1994139491
       vertices: []
       indices: 
       edges: []
@@ -232,11 +211,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pryzhok__kopia_0: -1524086712
-      pryzhok__kopia_1: 1755917332
-      pryzhok__kopia_2: 1033129383
-      pryzhok__kopia_3: 532057229
-      pryzhok__kopia_4: 446914633
+      protivnik_0: -597370149
+      protivnik_1: 210228206
+      protivnik_2: 772254725
+      protivnik_3: 1994139491
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 66a83c0de4d2ca440805446685b31c7e
+guid: 5c84c7b81beb0ce47979f59ec71458d5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -101,17 +101,29 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mob_0
+      name: uroven (1)_1
       rect:
         serializedVersion: 2
-        x: 451
-        y: 2482
-        width: 507
-        height: 510
+        x: 357
+        y: 1335
+        width: 1266
+        height: 546
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -119,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 32267b7396fe5c246b7f5f6616d09e32
-      internalID: 48294145
+      spriteID: 7cba48ad24d054d4a8cb4bde06eb03a7
+      internalID: -698280157
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mob_1
+      name: uroven (1)_4
       rect:
         serializedVersion: 2
-        x: 1256
-        y: 2467
-        width: 508
-        height: 508
+        x: 355
+        y: 543
+        width: 1266
+        height: 550
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,50 +152,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf1e7bcdd65199d41b128d1c65bc9818
-      internalID: -1149390278
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: mob_2
-      rect:
-        serializedVersion: 2
-        x: 2131
-        y: 2433
-        width: 509
-        height: 510
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 36713c080696a8c4780b3e6148ee9f60
-      internalID: 1505449992
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: mob_3
-      rect:
-        serializedVersion: 2
-        x: 2963
-        y: 2434
-        width: 508
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7de5a517d6a3e5140826f5134c5a92ec
-      internalID: -400773454
+      spriteID: ddb18c9525efa8042bf81692f5d87e93
+      internalID: 1742731238
       vertices: []
       indices: 
       edges: []
@@ -199,10 +169,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      mob_1: -1149390278
-      mob_0: 48294145
-      mob_3: -400773454
-      mob_2: 1505449992
+      uroven (1)_0: 32121941
+      uroven (1)_1: -698280157
+      uroven (1)_2: 110571362
+      uroven (1)_3: -1380522606
+      uroven (1)_4: 1742731238
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

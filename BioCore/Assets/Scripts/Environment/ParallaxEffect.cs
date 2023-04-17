@@ -18,7 +18,7 @@ public class ParallaxEffect : MonoBehaviour
         _position = transform.position;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         Vector3 delta = _camera.position - _position;
 

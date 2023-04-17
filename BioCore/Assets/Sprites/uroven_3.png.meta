@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0f552910297f02b4eb18da9c85ede73a
+guid: 89fde8d158b37e240be961c03cfab98a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -106,7 +106,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -117,106 +117,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pryzhok__kopia_0
+      name: uroven_3_6
       rect:
         serializedVersion: 2
-        x: 34
-        y: 1193
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.44124514, y: 0.5492996}
+        x: 1290
+        y: 1762
+        width: 236
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b30cffe132f446e4abd5fb3b65dad3a3
-      internalID: -1524086712
+      spriteID: a07a5e01b2ddadd43bcb90d66c971bbb
+      internalID: 593925032
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pryzhok__kopia_1
+      name: uroven_3_8
       rect:
         serializedVersion: 2
-        x: 330
-        y: 1192
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.44907913, y: 0.5230064}
+        x: 1298
+        y: 1670
+        width: 224
+        height: 67
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 38a0450c4d1e3f94e9386a5b12010600
-      internalID: 1755917332
+      spriteID: be24439aabd5d284aa0013bbd00129d5
+      internalID: -913339854
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pryzhok__kopia_2
+      name: uroven_3_12
       rect:
         serializedVersion: 2
-        x: 625
-        y: 1191
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.43732798, y: 0.5953131}
+        x: 1287
+        y: 1588
+        width: 235
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49cef1cc5ab2d6648bdc2c4c6b27dbf0
-      internalID: 1033129383
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pryzhok__kopia_3
-      rect:
-        serializedVersion: 2
-        x: 928
-        y: 1190
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.45299584, y: 0.5953131}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f016744e1fcdf7d4ab64d914d7ed28fd
-      internalID: 532057229
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pryzhok__kopia_4
-      rect:
-        serializedVersion: 2
-        x: 1239
-        y: 1189
-        width: 292
-        height: 348
-      alignment: 9
-      pivot: {x: 0.4216597, y: 0.60517305}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e7a37a554f2139d419ca8755672a625c
-      internalID: 446914633
+      spriteID: 82c22e3b82b83484d84c591d64b1063d
+      internalID: 922778767
       vertices: []
       indices: 
       edges: []
@@ -232,11 +190,40 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pryzhok__kopia_0: -1524086712
-      pryzhok__kopia_1: 1755917332
-      pryzhok__kopia_2: 1033129383
-      pryzhok__kopia_3: 532057229
-      pryzhok__kopia_4: 446914633
+      uroven_3_0: -966925615
+      uroven_3_1: -2029443168
+      uroven_3_10: 243909260
+      uroven_3_11: 1151759095
+      uroven_3_12: 922778767
+      uroven_3_13: 1778892587
+      uroven_3_14: 103695731
+      uroven_3_15: 1736175835
+      uroven_3_16: 752829764
+      uroven_3_17: -1351148385
+      uroven_3_18: -975630503
+      uroven_3_19: 1230373264
+      uroven_3_2: 734201954
+      uroven_3_20: 136504108
+      uroven_3_21: 291644730
+      uroven_3_22: 1875378365
+      uroven_3_23: 2045705813
+      uroven_3_24: -1614970854
+      uroven_3_25: 312213548
+      uroven_3_26: 769282565
+      uroven_3_27: -752786534
+      uroven_3_28: -210044141
+      uroven_3_29: -1924999247
+      uroven_3_3: 544927254
+      uroven_3_30: -558861188
+      uroven_3_31: 1940690840
+      uroven_3_32: 1110824775
+      uroven_3_33: -328332865
+      uroven_3_4: 1486906072
+      uroven_3_5: 1020587592
+      uroven_3_6: 593925032
+      uroven_3_7: 1826864467
+      uroven_3_8: -913339854
+      uroven_3_9: 2112123022
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
