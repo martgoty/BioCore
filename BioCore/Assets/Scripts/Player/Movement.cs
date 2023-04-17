@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
 public class Movement : MonoBehaviour
 {
     [Header("Player Movement")]
@@ -72,9 +71,9 @@ public class Movement : MonoBehaviour
     public void Flip(float horizontal)
     {
         if (horizontal < 0f)
-            _isRight = false;
-        else if (horizontal > 0f)
             _isRight = true;
+        else if (horizontal > 0f)
+            _isRight = false;
 
         if (_isRight)
         {

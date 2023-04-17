@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ParallaxEffect : MonoBehaviour
 {
-    [SerializeField, Range(0f, 1f)] private float _parallaxSpeed;
+    [SerializeField, Range(-1f, 1f)] private float _parallaxSpeed;
     [SerializeField] private bool _disableYParallax;
     private Transform _camera;
     private Vector3 _position;

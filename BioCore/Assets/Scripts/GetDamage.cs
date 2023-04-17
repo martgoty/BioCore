@@ -44,6 +44,8 @@ public class GetDamage : MonoBehaviour
             _rb.velocity = dir * force;
             yield return new WaitForSeconds(_disableControllSeconds);
             _playerController.enabled = true;
+            GlobalEventsSystem.TakeDamage();
+
         }
         else
         {

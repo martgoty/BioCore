@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Movement))]
 [RequireComponent(typeof(PlayerAttack))]
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Animator))]
 
 public class PlayerController : MonoBehaviour
 {

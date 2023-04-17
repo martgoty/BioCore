@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour
 {
     private Button startButton;
     private Button messageButton;
+    private Button exitButton;
     private Button backButton;
     private Label warningText;
     private TextField field;
@@ -50,6 +51,7 @@ public class UIController : MonoBehaviour
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
 
+        exitButton = root.Q<Button>("exit-button");
         startButton = root.Q<Button>("start-button");
         messageButton = root.Q<Button>("board-button");
         backButton = root.Q<Button>("back-button");
@@ -61,10 +63,16 @@ public class UIController : MonoBehaviour
         startButton.clicked += StartButtonPressed;
         messageButton.clicked += MessageButtonPressed;
         backButton.clicked += BackButtonPressed;
+        exitButton.clicked += Exit;
         //---------------------------------------------------------------
         DataConnection();
         _increment = _players.Rows.Count;
         //________________________________________________________________
+    }
+
+    void Exit()
+    {
+        Application.Quit();
     }
 
     void DataConnection()
@@ -103,7 +111,7 @@ public class UIController : MonoBehaviour
         {
             MyDataBase.ExecuteQueryWithoutAnswer($"INSERT INTO players VALUES ({_increment.ToString()}, \"{field.value}\")");
             _increment++;
-            SceneManager.LoadScene("_main");
+            SceneManager.LoadScene(1);
         }
         else
         {
