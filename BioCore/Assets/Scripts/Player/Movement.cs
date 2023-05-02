@@ -7,32 +7,40 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     [Header("Player Movement")]
-    [Space]
     [SerializeField] private float _moveSpeed;//максимальная скорость движения
     [SerializeField] private float _jumpForce;//сила прыжка
     [SerializeField] private float _jumpDeceleration;//резкость динамического прыжка
     [SerializeField] private float _maxFallSpeed;//максимальная скорость падения
-    [SerializeField] private bool _isRight;
-    private SpriteRenderer _spriteRenderer;
+    [SerializeField] private PhysicsMaterial2D[] _materials;
     private Rigidbody2D _rigidbody2D;
+    private bool _isGrounded;
 
-    public bool IsRight
-    {
-        get { return _isRight; }
-        set { _isRight = value; }
-    }
-
-
-    [Header("Ground Check")]
-    [Space]
-    [SerializeField][Range(0f, 1f)] private float _checkSphereRadius;
+    [Header("Ground & Wall Check")]
+    [SerializeField][Range(0f, 1f)] private float _groundCheckRadius;
     [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] public Vector2 _checkSphereCenter;
+    [SerializeField] public Vector2 _groundCheckCenter;
+    [SerializeField][Range(0f, 1f)] private float _wallCheckRadius;
+    [SerializeField] private LayerMask _wallLayer;
+    [SerializeField] private Vector2 _wallCheckCenter;
 
     private void Start()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        _isGrounded = IsGrounded();
+
+        if (_isGrounded)
+        {
+            GetComponent<CapsuleCollider2D>().sharedMaterial = _materials[0];
+        }
+        else
+        {
+            GetComponent<CapsuleCollider2D>().sharedMaterial = _materials[1];
+        }
+
     }
 
     public void PlayerMove(float horizontalMove, bool jump, bool jumpStop)
@@ -47,7 +55,7 @@ public class Movement : MonoBehaviour
         _rigidbody2D.velocity = new Vector2(horizontalMove * 100f * _moveSpeed, _rigidbody2D.velocity.y);
 
         //прыжок игрока
-        if (jump && IsGrounded())
+        if (jump && _isGrounded)
         {
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce * 4f);
         }
@@ -66,27 +74,27 @@ public class Movement : MonoBehaviour
                 }
             }
         }
+
+        if (horizontalMove > 0f)//смена направления проверки наличия стены
+        {
+            _wallCheckCenter = new Vector2(Mathf.Abs(_wallCheckCenter.x), _wallCheckCenter.y);
+        }
+        else if (horizontalMove < 0f)
+        {
+            if (_wallCheckCenter.x > 0)
+                _wallCheckCenter = new Vector2(_wallCheckCenter.x * -1f, _wallCheckCenter.y);
+        }
     }
 
-    public void Flip(float horizontal)
-    {
-        if (horizontal < 0f)
-            _isRight = true;
-        else if (horizontal > 0f)
-            _isRight = false;
+   
 
-        if (_isRight)
-        {
-            _spriteRenderer.flipX = true;
-        }
-        else
-        {
-            _spriteRenderer.flipX = false;
-        }
+    private bool IsWalled()
+    {
+        return Physics2D.OverlapCircle(new Vector2(transform.position.x + _wallCheckCenter.x, transform.position.y + _wallCheckCenter.y), _wallCheckRadius, _wallLayer);
     }
     public bool IsGrounded()
     {
-        return Physics2D.OverlapCircle(new Vector2(transform.position.x + _checkSphereCenter.x, transform.position.y + _checkSphereCenter.y), _checkSphereRadius, _groundLayer);
+        return Physics2D.OverlapCircle(new Vector2(transform.position.x + _groundCheckCenter.x, transform.position.y + _groundCheckCenter.y), _groundCheckRadius, _groundLayer);
     }
     private void OnDrawGizmos()
     {
@@ -94,6 +102,13 @@ public class Movement : MonoBehaviour
             Gizmos.color = Color.green;
         else
             Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(new Vector2(transform.position.x + _checkSphereCenter.x, transform.position.y + _checkSphereCenter.y), _checkSphereRadius);
+        Gizmos.DrawWireSphere(new Vector2(transform.position.x + _groundCheckCenter.x, transform.position.y + _groundCheckCenter.y), _groundCheckRadius);
+
+        if(IsWalled())
+            Gizmos.color = Color.green;
+        else
+            Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(new Vector2(transform.position.x + _wallCheckCenter.x, transform.position.y + _wallCheckCenter.y), _wallCheckRadius);
     }
 }

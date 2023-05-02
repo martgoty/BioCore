@@ -54,7 +54,7 @@ public class PlayerAttack : MonoBehaviour
             }
 
 
-            hit[i].GetComponent<GetDamage>().GetDamagePlayer(dir, _force);
+            //hit[i].GetComponent<GetDamage>().GetDamagePlayer(dir, _force);
         }
 
 

@@ -1,36 +1,47 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerAttackSystem))]
 [RequireComponent(typeof(Movement))]
-[RequireComponent(typeof(PlayerAttack))]
-[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AudioSource))]
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D _rb;
     private AudioSource _audio;
-    private Animator _animator;
-    private Movement _movement;
+    private Movement _movement;//скрипт для передвижения персонажа
     private DefaultControls _controls;//скрипт для управления
-    private PlayerAttack _attackControll;//скрипт для создания точки атаки
+    private Animator _animator;
+    private Rigidbody2D _rigidbody2D;
+    private SpriteRenderer _spriteRenderer;
+    private PlayerAttackSystem _attackSystem;
 
     private float _horizontalInput;
     private float _verticalInput;
     private bool _isJumpPressed;
     private bool _jumpStop;//контроль динамического прыжка
-    private PlayerAttack.AttackDirections _lastAttackDir;//переменная для возвращения напрвления атаки в исходное состояние
+    private bool _isRight;
+
+    private AttackDirectional _attackDir;
+    public AttackDirectional AttackDir
+    {
+        get { return _attackDir; }
+        set { _attackDir = value; }
+    }//getter и setter
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
         _movement = GetComponent<Movement>();
-        _rb = GetComponent<Rigidbody2D>();  _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-       
         _audio = GetComponent<AudioSource>();
         _controls = new DefaultControls();
-        _attackControll = GetComponent<PlayerAttack>();
-        
+        _animator = GetComponent<Animator>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _attackSystem = GetComponent<PlayerAttackSystem>();
+
+
     }
 
     private void OnEnable()
@@ -39,7 +50,7 @@ public class PlayerController : MonoBehaviour
         _controls.Enable();
         _controls.Main.Jump.performed += context => Jump(true);//когда клавиша прыжка нажата
         _controls.Main.Jump.canceled += context => Jump(false);//когда клавиша прыжка отпущена
-        _controls.Main.Attack.performed += context => Attack();
+        _controls.Main.Attack.canceled += context => Attack();//когда кнопка атаки нажата
 
     }
 
@@ -48,52 +59,27 @@ public class PlayerController : MonoBehaviour
         _controls.Disable();
     }
 
-    private void Start()
-    {
-        if (_movement.IsRight)
-        {
-            _lastAttackDir = PlayerAttack.AttackDirections.Right;
-        }
-        else
-        {
-            _lastAttackDir = PlayerAttack.AttackDirections.Left;
-        }
-    }
-
     private void Update()
     {
         _horizontalInput = _controls.Main.Move.ReadValue<float>() * Time.fixedDeltaTime;
         _verticalInput = _controls.Main.Vertical.ReadValue<float>() * Time.fixedDeltaTime;
+
+        Flip(_horizontalInput);
 
         if (!_audio.isPlaying && _horizontalInput != 0 && _movement.IsGrounded())
         {
             _audio.Play();
         }
 
-        ChangeAttackDirection();
+        AnimationControl();
 
-        AnimationsControl();
-
+        AttackControl();
     }
     private void FixedUpdate()
     {
-        _movement.Flip(_horizontalInput);
         _movement.PlayerMove(_horizontalInput, _isJumpPressed, _jumpStop);
         _isJumpPressed = false;
         _jumpStop = false;
-
-    }
-
-    private void Attack()
-    {
-        _attackControll.Attack();
-    }
-
-    private void AnimationsControl()
-    {
-        _animator.SetFloat("_velocityX", Mathf.Abs(_horizontalInput));
-        _animator.SetFloat("_velocityY", _rb.velocity.y);
-        _animator.SetBool("_isGrounded", _movement.IsGrounded());
     }
 
     private void Jump(bool isPressed)
@@ -108,36 +94,61 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void ChangeAttackDirection()
+    private void AnimationControl()
     {
-        if(_verticalInput > 0)
+        _animator.SetBool("_isGrounded", _movement.IsGrounded());
+        _animator.SetFloat("_velocityX", Mathf.Abs(_horizontalInput));
+        _animator.SetFloat("_velocityY", _rigidbody2D.velocity.y);
+    }
+
+    public void Flip(float horizontal)
+    {
+        if (horizontal > 0f)
         {
-            _attackControll.attackState = PlayerAttack.AttackDirections.Up;
+            _isRight = true;
         }
-        else if(_verticalInput < 0)
+        else if (horizontal < 0f)
         {
-            _attackControll.attackState = PlayerAttack.AttackDirections.Down;
+            _isRight = false;
+
+        }
+        _spriteRenderer.flipX = !_isRight;
+    }
+
+    private void Attack()
+    {
+        _attackSystem.Attack(_attackDir);
+    }
+    private void AttackControl()
+    {
+        
+        if (_verticalInput > 0)
+        {
+            _attackDir = AttackDirectional.Up;
+        }
+        else if (_verticalInput < 0)
+        {
+            _attackDir = AttackDirectional.Down;
         }
         else
         {
-           
-            if(_horizontalInput < 0)
+            if (_isRight)
             {
-                _attackControll.attackState = PlayerAttack.AttackDirections.Left;
-                _lastAttackDir = PlayerAttack.AttackDirections.Left;
-
-            }
-            else if(_horizontalInput > 0)
-            {
-                _attackControll.attackState = PlayerAttack.AttackDirections.Right;
-                _lastAttackDir = PlayerAttack.AttackDirections.Right;
-
+                _attackDir = AttackDirectional.Right;
             }
             else
             {
-                _attackControll.attackState = _lastAttackDir;
+                _attackDir = AttackDirectional.Left;
             }
         }
     }
 
+    public enum AttackDirectional
+    {
+        Left,
+        Right,
+        Up,
+        Down,
+    }
 }
+
