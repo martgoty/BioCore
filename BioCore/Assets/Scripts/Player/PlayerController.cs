@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,17 +5,16 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Movement))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(AudioSource))]
 
 public class PlayerController : MonoBehaviour
 {
     private AudioSource _audio;
     private Movement _movement;//скрипт для передвижения персонажа
-    private DefaultControls _controls;//скрипт для управления
     private Animator _animator;
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _spriteRenderer;
     private PlayerAttackSystem _attackSystem;
+    private PlayerInput _input;
 
     private float _horizontalInput;
     private float _verticalInput;
@@ -35,56 +33,18 @@ public class PlayerController : MonoBehaviour
     {
         _movement = GetComponent<Movement>();
         _audio = GetComponent<AudioSource>();
-        _controls = new DefaultControls();
         _animator = GetComponent<Animator>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _attackSystem = GetComponent<PlayerAttackSystem>();
-
-
+        _input = GetComponent<PlayerInput>();
+     
+        Cursor.lockState = CursorLockMode.Locked;
     }
-
-    private void OnEnable()
+    #region input management
+    public void Jump(InputAction.CallbackContext context)
     {
-        //подключение управления
-        _controls.Enable();
-        _controls.Main.Jump.performed += context => Jump(true);//когда клавиша прыжка нажата
-        _controls.Main.Jump.canceled += context => Jump(false);//когда клавиша прыжка отпущена
-        _controls.Main.Attack.canceled += context => Attack();//когда кнопка атаки нажата
-
-    }
-
-    private void OnDisable()
-    {
-        _controls.Disable();
-    }
-
-    private void Update()
-    {
-        _horizontalInput = _controls.Main.Move.ReadValue<float>() * Time.fixedDeltaTime;
-        _verticalInput = _controls.Main.Vertical.ReadValue<float>() * Time.fixedDeltaTime;
-
-        Flip(_horizontalInput);
-
-        if (!_audio.isPlaying && _horizontalInput != 0 && _movement.IsGrounded())
-        {
-            _audio.Play();
-        }
-
-        AnimationControl();
-
-        AttackControl();
-    }
-    private void FixedUpdate()
-    {
-        _movement.PlayerMove(_horizontalInput, _isJumpPressed, _jumpStop);
-        _isJumpPressed = false;
-        _jumpStop = false;
-    }
-
-    private void Jump(bool isPressed)
-    {
-        if (isPressed)
+        if (context.performed)
         {
             _isJumpPressed = true;
         }
@@ -92,6 +52,47 @@ public class PlayerController : MonoBehaviour
         {
             _jumpStop = true;
         }
+    }
+    public void Attack(InputAction.CallbackContext context)
+    {
+        _attackSystem.Attack(_attackDir);
+    }
+
+    public void Move(InputAction.CallbackContext context)
+    {
+        _horizontalInput = context.ReadValue<float>() * Time.fixedDeltaTime;
+    }
+
+    public void AttackDirection(InputAction.CallbackContext context)
+    {
+        _verticalInput = context.ReadValue<float>() * Time.fixedDeltaTime;
+    }
+
+    public void OpenChoiseMenu(InputAction.CallbackContext context)
+    {
+        _input.SwitchCurrentActionMap("UI");
+        GlobalEventsSystem.OpenMenu();
+    }
+    #endregion
+
+    private void Update()
+    {
+
+
+        Flip(_horizontalInput);
+
+        AnimationControl();
+        AttackControl();
+
+        
+
+    }
+
+    private void FixedUpdate()
+    {
+        _movement.PlayerMove(_horizontalInput, _isJumpPressed, _jumpStop);
+        _isJumpPressed = false;
+        _jumpStop = false;
     }
 
     private void AnimationControl()
@@ -115,10 +116,9 @@ public class PlayerController : MonoBehaviour
         _spriteRenderer.flipX = !_isRight;
     }
 
-    private void Attack()
-    {
-        _attackSystem.Attack(_attackDir);
-    }
+    /// <summary>
+    /// Смена направления атаки
+    /// </summary>
     private void AttackControl()
     {
         
@@ -142,7 +142,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
     public enum AttackDirectional
     {
         Left,

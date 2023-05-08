@@ -6,7 +6,7 @@ using Unity.Burst.CompilerServices;
 
 static class MyDataBase 
 {
-    private const string fileName = "players.db";
+    private const string fileName = "BioCoreBD.db";
     private static string DBPath;
     private static SqliteConnection connection;
     private static SqliteCommand command;
@@ -72,18 +72,14 @@ static class MyDataBase
             return null;
     }
 
-    public static DataTable GetTable(string query)
+    public static SqliteDataReader GetReader(string query)
     {
         OpenConnection();
 
-        SqliteDataAdapter adapter = new SqliteDataAdapter(query, connection);
+        command.CommandText = query;
+        SqliteDataReader reader = command.ExecuteReader();
 
-        DataSet DS = new DataSet();
-        adapter.Fill(DS);
-        adapter.Dispose();
+        return reader;
 
-        CloseConnection();
-        
-        return DS.Tables[0];
     }
 }

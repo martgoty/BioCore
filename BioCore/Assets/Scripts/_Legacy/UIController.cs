@@ -1,5 +1,3 @@
-using Mono.Cecil.Cil;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
@@ -79,8 +77,8 @@ namespace Legacy
 
         void DataConnection()
         {
-            _players = MyDataBase.GetTable("SELECT * FROM players");
-            _score = MyDataBase.GetTable("SELECT * FROM score");
+            //_players = MyDataBase.GetTable("SELECT * FROM players");
+            //_score = MyDataBase.GetTable("SELECT * FROM score");
             for (int i = 0; i < _score.Rows.Count; i++)
             {
                 scoreBoardList.Add(new ScoreBoard(_players.Rows[i][1].ToString(), int.Parse(_score.Rows[i][2].ToString())));
