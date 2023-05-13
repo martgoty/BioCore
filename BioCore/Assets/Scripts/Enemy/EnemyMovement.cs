@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField][Range(0f,20f)] private float _walkSpeed;
-    [SerializeField][Range(0f,20f)] private float _runSpeed;
+    [SerializeField][Range(0f,20f)] private float _walkSpeed;   //скорость хотьбы противника
+    [SerializeField][Range(0f,20f)] private float _runSpeed;    //скорость бега противника
     private Rigidbody2D _rigidbody2D;
 
     private void Awake()
@@ -27,5 +27,7 @@ public class EnemyMovement : MonoBehaviour
         }
 
     }
+
+
 
 }

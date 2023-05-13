@@ -1,20 +1,20 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ChangeActiveSortButton : MonoBehaviour
 {
-    [SerializeField] private Button[] _buttons;
-    [SerializeField] private string _numOfType;
-    [SerializeField] private Inventory _inventory;
 
-    public void ChangeActive()
+    [SerializeField] private Color _activeColor;
+    [SerializeField] private Color _unactiveColor;
+
+    public void SetActive()
     {
-        GetComponent<Button>().interactable = false;
-        foreach(var button in _buttons)
-        {
-            button.interactable = true;
-        }
+        GetComponent<Image>().color = _activeColor;
+    }
 
-        _inventory.UpdateItems(_numOfType);         
+    public void DropActive()
+    {
+        GetComponent<Image>().color = _unactiveColor;
     }
 }

@@ -407,6 +407,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SortTypeInventory",
+                    "type": "Value",
+                    "id": "99cbb0e0-99ae-4225-9840-4425168d9d41",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -797,17 +806,6 @@
                 },
                 {
                     "name": "",
-                    "id": "ecfd63cc-0e6f-410b-83d4-410883d136af",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Submit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "db77b58f-9a52-4d8c-8de0-7a43fd2b3e54",
                     "path": "*/{Cancel}",
                     "interactions": "",
@@ -963,7 +961,7 @@
                 {
                     "name": "",
                     "id": "65fe13b1-7a2f-4e8a-b798-3b5aa6e025aa",
-                    "path": "<Keyboard>/escape",
+                    "path": "<Keyboard>/backquote",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -992,6 +990,72 @@
                     "action": "MenuBack",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "ChangeSortType",
+                    "id": "a71ee365-582f-43a2-a354-68d30fd839af",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SortTypeInventory",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "3385155f-cc5d-405b-b49d-e716ca279c7b",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "SortTypeInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "08297cf1-fa48-4335-83ce-0f9a7ddadd63",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "SortTypeInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "ChangeSortType",
+                    "id": "3b91de30-dfc8-430e-9a7d-19e70c8d1369",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SortTypeInventory",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "2b05891c-b52c-4aa5-92e1-91cae7bc45c4",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SortTypeInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "989daf41-3d49-4502-bea9-b5925429e65c",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SortTypeInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

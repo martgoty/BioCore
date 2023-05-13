@@ -6,18 +6,21 @@ using UnityEngine.InputSystem;
 
 public class MenuNavigate : MonoBehaviour
 {
-    [SerializeField] private PlayerInput _input;
-    [SerializeField] private GameObject[] _menuWindows;
-    private int number = 0;
+    [SerializeField] private PlayerInput _input;                    //система управления
+    [SerializeField] private GameObject[] _menuWindows;             //окна интерфейса
+    private int numOfWindow = 0;                                    //номер активного окна
+    private GameObject lastSelected;                                //предыдущий выбранный объект интерфейса
 
     private void Awake()
     {
         GlobalEventsSystem.OnOpenMenu.AddListener(OpenMenu);
     }
 
+
+
     public void OpenNewWindow(int num)
     {
-        number = num;
+        numOfWindow = num;
         _menuWindows[num].SetActive(true);
         _menuWindows[num - 1].SetActive(false);
     }
@@ -26,7 +29,7 @@ public class MenuNavigate : MonoBehaviour
     {
         if (context.performed)
         {
-            if (number == 0)
+            if (numOfWindow == 0)
             {
                 _input.SwitchCurrentActionMap("Main");
 
@@ -39,14 +42,13 @@ public class MenuNavigate : MonoBehaviour
             }
             else
             {
-                _menuWindows[number].SetActive(false);
-                _menuWindows[number - 1].SetActive(true);
-                number--;
+                _menuWindows[numOfWindow].SetActive(false);
+                _menuWindows[numOfWindow - 1].SetActive(true);
+                numOfWindow--;
             }
         }
         
     }
-
     private void OpenMenu()
     {
         _menuWindows[0].SetActive(true);
@@ -63,4 +65,17 @@ public class MenuNavigate : MonoBehaviour
 
         Time.timeScale = 1f;
     }
+
+    private void Update()
+    {
+        if(EventSystem.current.currentSelectedGameObject == null && lastSelected != null)
+        {
+            EventSystem.current.SetSelectedGameObject(lastSelected);
+        }
+        else
+        {
+            lastSelected = EventSystem.current.currentSelectedGameObject;
+        }
+    }
+
 }

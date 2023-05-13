@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GetDamage : MonoBehaviour
 {
-    [SerializeField] float _force;
-    [SerializeField] float _timeToDisable;
-    [SerializeField] int _hp;
-    private Rigidbody2D _rb;
-    private PingPongAI _ai;
+    [SerializeField] float _force;          //сила отталкивания противника при получении урона
+    [SerializeField] float _timeToDisable;  //время отключения скрипта на скрипт
+    [SerializeField] int _hp;               //здоровье противника
+    private Rigidbody2D _rb;                //физическое тело
+    private PingPongAI _ai;                 //скрипт на движение противника
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();

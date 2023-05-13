@@ -429,6 +429,15 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SortTypeInventory"",
+                    ""type"": ""Value"",
+                    ""id"": ""99cbb0e0-99ae-4225-9840-4425168d9d41"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -819,17 +828,6 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ecfd63cc-0e6f-410b-83d4-410883d136af"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""db77b58f-9a52-4d8c-8de0-7a43fd2b3e54"",
                     ""path"": ""*/{Cancel}"",
                     ""interactions"": """",
@@ -985,7 +983,7 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""65fe13b1-7a2f-4e8a-b798-3b5aa6e025aa"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""path"": ""<Keyboard>/backquote"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -1014,6 +1012,72 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                     ""action"": ""MenuBack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""ChangeSortType"",
+                    ""id"": ""a71ee365-582f-43a2-a354-68d30fd839af"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SortTypeInventory"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""3385155f-cc5d-405b-b49d-e716ca279c7b"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SortTypeInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""08297cf1-fa48-4335-83ce-0f9a7ddadd63"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SortTypeInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""ChangeSortType"",
+                    ""id"": ""3b91de30-dfc8-430e-9a7d-19e70c8d1369"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SortTypeInventory"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""2b05891c-b52c-4aa5-92e1-91cae7bc45c4"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SortTypeInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""989daf41-3d49-4502-bea9-b5925429e65c"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SortTypeInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -1069,6 +1133,7 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_MenuClose = m_UI.FindAction("MenuClose", throwIfNotFound: true);
         m_UI_MenuBack = m_UI.FindAction("MenuBack", throwIfNotFound: true);
+        m_UI_SortTypeInventory = m_UI.FindAction("SortTypeInventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1220,6 +1285,7 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_MenuClose;
     private readonly InputAction m_UI_MenuBack;
+    private readonly InputAction m_UI_SortTypeInventory;
     public struct UIActions
     {
         private @DefaultControls m_Wrapper;
@@ -1236,6 +1302,7 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @MenuClose => m_Wrapper.m_UI_MenuClose;
         public InputAction @MenuBack => m_Wrapper.m_UI_MenuBack;
+        public InputAction @SortTypeInventory => m_Wrapper.m_UI_SortTypeInventory;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1281,6 +1348,9 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
             @MenuBack.started += instance.OnMenuBack;
             @MenuBack.performed += instance.OnMenuBack;
             @MenuBack.canceled += instance.OnMenuBack;
+            @SortTypeInventory.started += instance.OnSortTypeInventory;
+            @SortTypeInventory.performed += instance.OnSortTypeInventory;
+            @SortTypeInventory.canceled += instance.OnSortTypeInventory;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1321,6 +1391,9 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
             @MenuBack.started -= instance.OnMenuBack;
             @MenuBack.performed -= instance.OnMenuBack;
             @MenuBack.canceled -= instance.OnMenuBack;
+            @SortTypeInventory.started -= instance.OnSortTypeInventory;
+            @SortTypeInventory.performed -= instance.OnSortTypeInventory;
+            @SortTypeInventory.canceled -= instance.OnSortTypeInventory;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1378,5 +1451,6 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnMenuClose(InputAction.CallbackContext context);
         void OnMenuBack(InputAction.CallbackContext context);
+        void OnSortTypeInventory(InputAction.CallbackContext context);
     }
 }
