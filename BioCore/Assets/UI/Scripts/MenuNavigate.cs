@@ -10,6 +10,11 @@ public class MenuNavigate : MonoBehaviour
     [SerializeField] private GameObject[] _menuWindows;             //окна интерфейса
     private int numOfWindow = 0;                                    //номер активного окна
     private GameObject lastSelected;                                //предыдущий выбранный объект интерфейса
+    public int NumOfWindow
+    {
+        get { return numOfWindow; }
+        set { numOfWindow = value; }
+    }
 
     private void Awake()
     {

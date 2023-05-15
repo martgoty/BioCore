@@ -432,9 +432,9 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""SortTypeInventory"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""99cbb0e0-99ae-4225-9840-4425168d9d41"",
-                    ""expectedControlType"": ""Axis"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -818,10 +818,21 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b00db667-7289-431b-94a9-ec987e1dc568"",
-                    ""path"": ""*/{Submit}"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse;Gamepad;Touch;Joystick;XR"",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c430b27-5635-4d35-8cf2-02d57d5f10a2"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

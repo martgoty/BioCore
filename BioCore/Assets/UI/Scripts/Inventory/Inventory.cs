@@ -1,8 +1,10 @@
 using Mono.Data.Sqlite;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -10,173 +12,200 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    [Header("Items Control")]
-    [SerializeField] private ScrollRect _scroll;
-    [SerializeField] private ItemField _itemTemplate;
-    [SerializeField] private Transform _container;
-    [Header("Active Swipe")]
-    [SerializeField] private int _countToSwipe;
-    private GameObject _currentItem;
-    private int _countOfItem = 0;
-    private int _currentItemIndex = 1;
-    [Header("Sorting")]
-    [SerializeField] ChangeActiveSortButton[] _sortTypeButtons;
+    [SerializeField] private MenuNavigate _navigate;
+    [SerializeField] private GameObject[] _visualItems;
+    [SerializeField] private GameObject[] _panels;
+    [SerializeField] private GameObject _actionWindow;
+    [SerializeField] private TextMeshProUGUI _title;
+    private List<Item> _itemsList = new List<Item>();
+    private List<string> _titleOfType = new List<string>();
     private int _currentSortType = 0;
+    private int _currentOrderItem = 0;
 
-        
-    public void SwipeScroll(InputAction.CallbackContext context)
+    private bool isPressed = false;
+    private void OnEnable()
     {
-        Vector2 dir = context.ReadValue<Vector2>();
-        
-        if (gameObject.activeSelf)
-        {
-            CheckActiveElementChange(dir.y);
-            if (dir.y < 0)
-            {
-                if (_currentItemIndex < _countOfItem)
-                {
-
-                    if (_currentItemIndex - _countToSwipe > 0)
-                    {
-                        _scroll.verticalNormalizedPosition = 1f - (((float)_currentItemIndex - _countToSwipe) / (_countOfItem - _countToSwipe));
-                    }
-                }
-            }
-            else if (dir.y > 0)
-            {
-                if (_currentItemIndex > 1)
-                {
-
-                    //if (_currentItemIndex <= _countOfItem - _countToSwipe)
-                    //{
-                    //    _scroll.verticalNormalizedPosition = (float)(_currentItemIndex - 1) / (_countOfItem - _countToSwipe);
-                    //}
-                }
-            }
-
-            if (context.performed)
-            {
-                
-            }
-        }
-        
+        UpdateList();
+        ChangeList();
+        UpdateTitle();
     }
-    public void OnChangeSort(InputAction.CallbackContext context)
+
+    public void ChangeSortType(InputAction.CallbackContext context)
     {
         float dir = context.ReadValue<float>();
         if (context.performed && gameObject.activeSelf)
         {
-            if (dir > 0 && _currentSortType < _sortTypeButtons.Length - 1)
+            if (dir > 0)
             {
-                _sortTypeButtons[_currentSortType].DropActive();
-                _currentSortType++;
-                _sortTypeButtons[_currentSortType].SetActive();
+                if (_currentSortType < _titleOfType.Count - 1)
+                {
+                    _currentSortType++;
+                    if (_currentSortType == _titleOfType.Count - 1)
+                    {
+                        _panels[1].SetActive(false);
+                    }
+                    else
+                    {
+                        _panels[0].SetActive(true);
+                    }
+                }
             }
-            else if(dir < 0 && _currentSortType > 0)
+            else if (dir < 0)
             {
-                _sortTypeButtons[_currentSortType].DropActive();
-                _currentSortType--;
-                _sortTypeButtons[_currentSortType].SetActive();
+                if (_currentSortType > 0)
+                {
+                    _currentSortType--;
+                    if (_currentSortType == 0)
+                    {
+                        _panels[0].SetActive(false);
+                    }
+                    else
+                    {
+                        _panels[1].SetActive(true);
+                    }
+                }
             }
-            UpdateItems((_currentSortType + 1).ToString());
-            EventSystem.current.SetSelectedGameObject(_currentItem);
-            DropScrollView();
+            _currentOrderItem = 0;
+            _title.text = _titleOfType[_currentSortType];
+            UpdateList();
+            ChangeList();
         }
-
     }
-
-    private void DropScrollView()
+    public void OnListActiveChange(InputAction.CallbackContext context)
     {
-        _scroll.verticalNormalizedPosition = 1f;
-        _currentItemIndex = 1;
-    }
-
-    private void OnDisable()
-    {
-        _currentItem = null;
-    }
-    private void OnEnable()
-    {
-        
-        SqliteDataReader reader = MyDataBase.GetReader($"SELECT * FROM Inventory WHERE type = {_currentSortType + 1}" );
-
-        if (reader.HasRows)
+        Vector2 dir = context.ReadValue<Vector2>();
+        if (gameObject.activeSelf && !_actionWindow.activeSelf)
         {
-            TemplateInstantiate(reader);
-        }
-
-        foreach(var sortTypeButton in _sortTypeButtons)
-        {
-            sortTypeButton.DropActive();
-        }
-        _sortTypeButtons[_currentSortType].SetActive();
-        EventSystem.current.SetSelectedGameObject(_currentItem);
-        DropScrollView();
-    }
-
-    private void CheckActiveElementChange(float dir)
-    {
-        Debug.Log("Cheking");
-        if(_currentItem != EventSystem.current.currentSelectedGameObject)
-        {
-            Debug.Log("Complete");
-
-            _currentItem = EventSystem.current.currentSelectedGameObject;
-            if(dir > 0)
+            if (dir.y < 0 && _currentOrderItem < _itemsList.Count - 1 && !isPressed)
             {
-                _currentItemIndex--;
+                _currentOrderItem++;
+                ChangeList();
+                isPressed = true;
             }
-            else if(dir < 0)
+            else if (dir.y > 0 && _currentOrderItem > 0 && !isPressed)
             {
-                _currentItemIndex++;
+                _currentOrderItem--;
+                ChangeList();
+                isPressed = true;
+            }
+            else if(dir.y == 0)
+            {
+                isPressed = false;
             }
             
         }
+        
     }
 
-    private void TemplateInstantiate(SqliteDataReader reader)
+    public void OnActionWindowOpen(InputAction.CallbackContext context)
     {
-        _countOfItem = 0;
-        foreach (Transform child in _container)
+        if(gameObject.activeSelf && context.performed)
         {
-            Destroy(child.gameObject);
-        }
-
-        while (reader.Read())
-        {
-            var cell = Instantiate(_itemTemplate, _container);
-            cell.LoadItems(reader);
-            if(_currentItem == null)
-            {
-                _currentItem = cell.gameObject;
-            }
-            _countOfItem++;
+            _navigate.NumOfWindow = 2;
+            _actionWindow.SetActive(true);
         }
     }
-
-    public void UpdateItems(string type)
+    public void DeleteItem()
     {
-        _currentItem = null;
-        foreach (Transform child in _container)
-        {
-            Destroy(child.gameObject);
-        }
-        _countOfItem = 0;
-        SqliteDataReader reader = MyDataBase.GetReader($"SELECT * FROM Inventory WHERE type = {type}");
+        MyDataBase.ExecuteQueryWithoutAnswer($"DELETE FROM Inventory WHERE id = {_itemsList[_currentOrderItem].ID}");
+        UpdateList();
+        ChangeList();
+    }
+    private void UpdateList()
+    {
+        _itemsList.Clear();
+        SqliteDataReader reader = MyDataBase.GetReader($"SELECT * FROM Inventory WHERE type = {_currentSortType + 1}");
+        Debug.Log(reader.HasRows);
         if (reader.HasRows)
         {
             while (reader.Read())
             {
-                var cell = Instantiate(_itemTemplate, _container);
-                cell.LoadItems(reader);
-                if (_currentItem == null)
-                {
-                    _currentItem = cell.gameObject;
-                }
-                _countOfItem++;
+                int id = Convert.ToInt32(reader["id"].ToString());
+                string name = reader["name"].ToString();
+                int price = Convert.ToInt32(reader["price"].ToString());
+                int quantity = Convert.ToInt32(reader["quantity"].ToString());
+                int type = Convert.ToInt32(reader["quantity"].ToString());
+
+                _itemsList.Add(new Item(id, name, price, quantity, type));
             }
         }
     }
+    private void ChangeList()
+    {
 
+        int temp = _currentOrderItem - 3; 
+        for(int i = 0; i < _visualItems.Length; i++)
+        {
+            try
+            {
+                _visualItems[i].SetActive(true);
+                _visualItems[i].GetComponent<ItemField>().LoadItems(_itemsList[temp]);
+            }
+            catch
+            {
+                _visualItems[i].SetActive(false);
+            }
+            temp++;
+        }
+    }
+    private void UpdateTitle()
+    {
+        _titleOfType.Clear();
+        SqliteDataReader reader = MyDataBase.GetReader("SELECT * FROM TypeOfItems");
+
+        if (reader.HasRows)
+        {
+            while (reader.Read())
+            {
+                _titleOfType.Add(reader["type"].ToString());
+            }
+        }
+        _title.text = _titleOfType[_currentSortType];
+    }
+
+}
+
+public struct Item
+{
+    int _id;
+    string _name;
+    int _price;
+    int _quantity;
+    int _type;
+
+    public int ID
+    {
+        get { return _id; }
+        set { _id = value; }
+    }
+    public string NameOfItem
+    {
+        get { return _name; }
+        set { _name = value; }
+    }
+    public int Price
+    {
+        get { return _price; }
+        set { _price = value; }
+    }
+    public int Quantity
+    {
+        get { return _quantity; }
+        set { _quantity = value; }
+    }
+    public int Type
+    {
+        get { return _type; }
+        set { _type = value; }
+    }
+
+    public Item(int id, string name, int price, int quantity, int type)
+    {
+        _id = id;
+        _name = name;
+        _price = price;
+        _quantity = quantity;
+        _type = type;
+    }
 }
 
