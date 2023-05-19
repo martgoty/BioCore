@@ -17,14 +17,14 @@ public class ParticleControllSystem : MonoBehaviour
 
     private void Update()
     {
-        if(!_movement.IsGrounded() && _isWaiting)
+        if(_movement.IsGrounded() && _isWaiting)
         {
             _stayPosition = new Vector2(_movement.transform.position.x + _movement._groundCheckCenter.x, _movement.transform.position.y + _movement._groundCheckCenter.y);
             transform.position = _stayPosition;
             _system.Play();
             _isWaiting = false;
         }
-        else if(_movement.IsGrounded() && !_isWaiting)
+        else if(!_movement.IsGrounded() && !_isWaiting)
         {
             _isWaiting = true;
         }

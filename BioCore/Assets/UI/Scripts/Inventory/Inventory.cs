@@ -22,7 +22,8 @@ public class Inventory : MonoBehaviour
     private int _currentSortType = 0;
     private int _currentOrderItem = 0;
 
-    private bool isPressed = false;
+    private bool isNavigateButtonPressed = false;
+
     private void OnEnable()
     {
         UpdateList();
@@ -65,10 +66,16 @@ public class Inventory : MonoBehaviour
                     }
                 }
             }
-            _currentOrderItem = 0;
-            _title.text = _titleOfType[_currentSortType];
-            UpdateList();
-            ChangeList();
+            if(_currentSortType >= 0 && _currentSortType < _titleOfType.Count)
+            {
+                _currentOrderItem = 0;
+                _title.text = _titleOfType[_currentSortType];
+                UpdateList();
+                ChangeList();
+            }
+            Debug.Log(_currentSortType);
+            Debug.Log(_titleOfType[_currentSortType]);
+
         }
     }
     public void OnListActiveChange(InputAction.CallbackContext context)
@@ -76,21 +83,21 @@ public class Inventory : MonoBehaviour
         Vector2 dir = context.ReadValue<Vector2>();
         if (gameObject.activeSelf && !_actionWindow.activeSelf)
         {
-            if (dir.y < 0 && _currentOrderItem < _itemsList.Count - 1 && !isPressed)
+            if (dir.y < 0 && _currentOrderItem < _itemsList.Count - 1 && !isNavigateButtonPressed)
             {
                 _currentOrderItem++;
                 ChangeList();
-                isPressed = true;
+                isNavigateButtonPressed = true;
             }
-            else if (dir.y > 0 && _currentOrderItem > 0 && !isPressed)
+            else if (dir.y > 0 && _currentOrderItem > 0 && !isNavigateButtonPressed)
             {
                 _currentOrderItem--;
                 ChangeList();
-                isPressed = true;
+                isNavigateButtonPressed = true;
             }
             else if(dir.y == 0)
             {
-                isPressed = false;
+                isNavigateButtonPressed = false;
             }
             
         }
@@ -99,23 +106,28 @@ public class Inventory : MonoBehaviour
 
     public void OnActionWindowOpen(InputAction.CallbackContext context)
     {
-        if(gameObject.activeSelf && context.performed)
+        if(gameObject.activeSelf && context.performed && _currentOrderItem < _itemsList.Count)
         {
             _navigate.NumOfWindow = 2;
             _actionWindow.SetActive(true);
         }
+
     }
     public void DeleteItem()
     {
-        MyDataBase.ExecuteQueryWithoutAnswer($"DELETE FROM Inventory WHERE id = {_itemsList[_currentOrderItem].ID}");
-        UpdateList();
-        ChangeList();
+        if (_actionWindow.activeSelf)
+        {
+            Debug.Log("DELETE");
+            MyDataBase.ExecuteQueryWithoutAnswer($"DELETE FROM Inventory WHERE id = {_itemsList[_currentOrderItem].ID}");
+            UpdateList();
+            ChangeList();
+            _actionWindow.SetActive(false);
+        }
     }
     private void UpdateList()
     {
         _itemsList.Clear();
         SqliteDataReader reader = MyDataBase.GetReader($"SELECT * FROM Inventory WHERE type = {_currentSortType + 1}");
-        Debug.Log(reader.HasRows);
         if (reader.HasRows)
         {
             while (reader.Read())
