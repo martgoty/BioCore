@@ -84,7 +84,10 @@ public class PlayerController : MonoBehaviour
         AnimationControl();
         AttackControl();
 
-        
+        if(_horizontalInput != 0 && _movement.IsGrounded() && !_audio.isPlaying)
+        {
+            _audio.Play();
+        }
 
     }
 

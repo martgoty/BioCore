@@ -77,6 +77,7 @@ public class TakeDamage : MonoBehaviour
     {
         _playerController.enabled = false;
         _rb.velocity = new Vector2(direction.x * _force, direction.y * _force);
+        GlobalEventsSystem.TakeDamage();
         yield return new WaitForSeconds(_disableControllSecond);
         _isEnabled = true;
         _playerController.enabled = true;

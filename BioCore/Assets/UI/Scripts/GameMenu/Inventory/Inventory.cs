@@ -73,8 +73,7 @@ public class Inventory : MonoBehaviour
                 UpdateList();
                 ChangeList();
             }
-            Debug.Log(_currentSortType);
-            Debug.Log(_titleOfType[_currentSortType]);
+
 
         }
     }
@@ -117,7 +116,17 @@ public class Inventory : MonoBehaviour
     {
         if (_actionWindow.activeSelf)
         {
-            Debug.Log("DELETE");
+            MyDataBase.ExecuteQueryWithoutAnswer($"DELETE FROM Inventory WHERE id = {_itemsList[_currentOrderItem].ID}");
+            UpdateList();
+            ChangeList();
+            _actionWindow.SetActive(false);
+        }
+    }
+    public void UseItem()
+    {
+        if (_actionWindow.activeSelf)
+        {
+            GlobalEventsSystem.HeathUp();
             MyDataBase.ExecuteQueryWithoutAnswer($"DELETE FROM Inventory WHERE id = {_itemsList[_currentOrderItem].ID}");
             UpdateList();
             ChangeList();
