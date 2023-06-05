@@ -30,5 +30,6 @@ public class ParallaxEffect : MonoBehaviour
         transform.position += delta * _parallaxSpeed;
     }
 
-
 }
+
+

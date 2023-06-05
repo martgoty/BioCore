@@ -7,10 +7,10 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     [Header("Player Movement")]
-    [SerializeField] private float _moveSpeed;//максимальная скорость движения
-    [SerializeField] private float _jumpForce;//сила прыжка
-    [SerializeField] private float _jumpDeceleration;//резкость динамического прыжка
-    [SerializeField] private float _maxFallSpeed;//максимальная скорость падения
+    [SerializeField] private float _moveSpeed;//  
+    [SerializeField] private float _jumpForce;// 
+    [SerializeField] private float _jumpDeceleration;//  
+    [SerializeField] private float _maxFallSpeed;//  
     [SerializeField] private PhysicsMaterial2D[] _materials;
     private Rigidbody2D _rigidbody2D;
     private bool _isGrounded;
@@ -26,6 +26,7 @@ public class Movement : MonoBehaviour
     private void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        
     }
 
     private void Update()
@@ -45,21 +46,21 @@ public class Movement : MonoBehaviour
 
     public void PlayerMove(float horizontalMove, bool jump, bool jumpStop)
     {
-        //ограничение максимальной скорости падения
+        //   
         if (_rigidbody2D.velocity.y < -_maxFallSpeed)
         {
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, -_maxFallSpeed);
         }
 
-        //движение игрока 
+        //  
         _rigidbody2D.velocity = new Vector2(horizontalMove * 100f * _moveSpeed, _rigidbody2D.velocity.y);
 
-        //прыжок игрока
+        // 
         if (jump && _isGrounded)
         {
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpForce * 4f);
         }
-        else if (jumpStop)//условие для динамичной высоты прыжка
+        else if (jumpStop)//    
         {
             jumpStop = false;
             if (_rigidbody2D.velocity.y > 0)
@@ -75,7 +76,7 @@ public class Movement : MonoBehaviour
             }
         }
 
-        if (horizontalMove > 0f)//смена направления проверки наличия стены
+        if (horizontalMove > 0f)//    
         {
             _wallCheckCenter = new Vector2(Mathf.Abs(_wallCheckCenter.x), _wallCheckCenter.y);
         }
