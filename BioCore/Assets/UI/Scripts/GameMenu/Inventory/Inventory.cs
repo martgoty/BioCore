@@ -136,7 +136,7 @@ public class Inventory : MonoBehaviour
     private void UpdateList()
     {
         _itemsList.Clear();
-        SqliteDataReader reader = MyDataBase.GetReader($"SELECT * FROM Inventory WHERE type = {_currentSortType + 1}");
+        SqliteDataReader reader = MyDataBase.GetReader($"SELECT * FROM Inventory WHERE type = {_currentSortType + 1} and player = {StaticInformation.id}");
         if (reader.HasRows)
         {
             while (reader.Read())

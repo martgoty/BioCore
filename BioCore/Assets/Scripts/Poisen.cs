@@ -9,7 +9,7 @@ public class Poisen : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            MyDataBase.ExecuteQueryWithoutAnswer("INSERT INTO Inventory (name, price,quantity,type) VALUES ('Poison', 100, 1, 2)");
+            MyDataBase.ExecuteQueryWithoutAnswer($"INSERT INTO Inventory (name, price,quantity,type, player) VALUES ('Зелье здоровья', 100, 1, 2, {StaticInformation.id})");
             _sound.GetComponent<AudioSource>().Play();
             Destroy(gameObject);
         }

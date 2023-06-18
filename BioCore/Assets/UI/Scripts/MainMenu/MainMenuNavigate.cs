@@ -7,10 +7,35 @@ using UnityEngine.SceneManagement;
 public class MainMenuNavigate : MonoBehaviour
 {
     [SerializeField] GameObject _firstSelected;
+    [SerializeField] GameObject _menu;
+    [SerializeField] GameObject _setting;
+    [SerializeField] GameObject _level;
     private GameObject _lastSelected;
-    public void OnEnterGame()
+
+    public void CloseOptions()
     {
-        SceneManager.LoadScene(1);
+
+        if(_setting.activeSelf){
+            _menu.SetActive(true);
+            _setting.SetActive(false);
+        }
+        
+    }
+    public void CloseLevels(){
+        if(_level.activeSelf){
+            _level.SetActive(false);
+            _menu.SetActive(true);
+        }
+    }
+    public void OptionsOpen()
+    {
+        _menu.SetActive(false);
+        _setting.SetActive(true);
+    }
+    public void OnLevelsOpen()
+    {
+        _level.SetActive(true);
+        _menu.SetActive(false);
     }
     public void OnExit()
     {
@@ -19,9 +44,9 @@ public class MainMenuNavigate : MonoBehaviour
 
     private void OnEnable()
     {
-        _firstSelected = GameObject.Find("Start");
-        Time.timeScale = 1;
-        EventSystem.current.SetSelectedGameObject(_firstSelected);
+        // _firstSelected = GameObject.Find("Start");
+        // Time.timeScale = 1;
+        // EventSystem.current.SetSelectedGameObject(_firstSelected);
     }
     private void Update()
     {

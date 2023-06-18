@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
+using System;
 
 public class Health : MonoBehaviour
 {
     [SerializeField] private Image[] _hpImage;
+    [SerializeField] private TextMeshProUGUI _money;
     [SerializeField] private GameObject[] _uiElements;
     private int _hp;
 
@@ -15,6 +16,16 @@ public class Health : MonoBehaviour
         GlobalEventsSystem.OnTakeDamage.AddListener(Damage);
         GlobalEventsSystem.OnHealth.AddListener(HealthUp);
         _hp = _hpImage.Length;
+        
+        string money;
+        try{
+            money = MyDataBase.ExecuteQueryWithAnswer($"select Money from Logins where Login = \'{StaticInformation.login}\'").ToString();
+        }
+        catch{
+            money = "0";
+        }
+        _money.text = money;
+
     }
     private void Update()
     {
