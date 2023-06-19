@@ -8,13 +8,7 @@ public class MenuNavigate : MonoBehaviour
 {
     [SerializeField] private PlayerInput _input;                    //система управления
     [SerializeField] private GameObject[] _menuWindows;             //окна интерфейса
-    private int numOfWindow = 0;                                    //номер активного окна
-    private GameObject lastSelected;                                //предыдущий выбранный объект интерфейса
-    public int NumOfWindow
-    {
-        get { return numOfWindow; }
-        set { numOfWindow = value; }
-    }
+    private GameObject lastSelected;                                //предыдущий выбранный объект интерфейс
 
     private void Awake()
     {
@@ -22,38 +16,6 @@ public class MenuNavigate : MonoBehaviour
     }
 
 
-
-    public void OpenNewWindow(int num)
-    {
-        numOfWindow = num;
-        _menuWindows[num].SetActive(true);
-        _menuWindows[num - 1].SetActive(false);
-    }
-
-    public void CloseNewWindow(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if (numOfWindow == 0)
-            {
-                _input.SwitchCurrentActionMap("Main");
-
-                foreach (var window in _menuWindows)
-                {
-                    window.SetActive(false);
-                }
-
-                Time.timeScale = 1f;
-            }
-            else
-            {
-                _menuWindows[numOfWindow].SetActive(false);
-                _menuWindows[numOfWindow - 1].SetActive(true);
-                numOfWindow--;
-            }
-        }
-        
-    }
     private void OpenMenu()
     {
         _menuWindows[0].SetActive(true);
@@ -61,6 +23,17 @@ public class MenuNavigate : MonoBehaviour
     }
     public void CloseMenu(InputAction.CallbackContext context)
     {
+        _input.SwitchCurrentActionMap("Main");
+
+        foreach (var window in _menuWindows)
+        {
+            window.SetActive(false);
+        }
+
+        Time.timeScale = 1f;
+    }
+
+    public void Countinue(){
         _input.SwitchCurrentActionMap("Main");
 
         foreach (var window in _menuWindows)
@@ -83,4 +56,18 @@ public class MenuNavigate : MonoBehaviour
         }
     }
 
+    public void VolumeSetting(){
+
+        foreach(GameObject menus in _menuWindows){
+            menus.SetActive(false);
+        }
+        _menuWindows[3].SetActive(true);
+    }
+
+    public void OnMenuBack(InputAction.CallbackContext context){
+        if(_menuWindows[3].activeSelf){
+            _menuWindows[3].SetActive(false);
+            _menuWindows[0].SetActive(true);
+        }
+    }
 }

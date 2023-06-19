@@ -7,11 +7,12 @@ using System;
 public class Health : MonoBehaviour
 {
     [SerializeField] private Image[] _hpImage;
+    [SerializeField] private Image _moneyImage;
     [SerializeField] private TextMeshProUGUI _money;
     [SerializeField] private GameObject[] _uiElements;
     private int _hp;
 
-    private void Awake()
+    private void Start()
     {
         GlobalEventsSystem.OnTakeDamage.AddListener(Damage);
         GlobalEventsSystem.OnHealth.AddListener(HealthUp);
@@ -29,17 +30,21 @@ public class Health : MonoBehaviour
     }
     private void Update()
     {
-        if (_uiElements[0].activeSelf || _uiElements[1].activeSelf)
+        if (_uiElements[0].activeSelf || _uiElements[1].activeSelf || _uiElements[2].activeSelf)
         {
             _hpImage[0].enabled = false;
             _hpImage[1].enabled = false;
             _hpImage[2].enabled = false;
+            _moneyImage.enabled = false;
+            _money.enabled =false;
         }
         else
         {
             _hpImage[0].enabled = true;
             _hpImage[1].enabled = true;
             _hpImage[2].enabled = true;
+            _moneyImage.enabled = true;
+            _money.enabled = true;
         }
     }
     private void Damage()

@@ -36,19 +36,22 @@ public class Inventory : MonoBehaviour
         float dir = context.ReadValue<float>();
         if (context.performed && gameObject.activeSelf)
         {
+            _panels[0].SetActive(true);
+            _panels[1].SetActive(true);
             if (dir > 0)
             {
                 if (_currentSortType < _titleOfType.Count - 1)
                 {
                     _currentSortType++;
-                    if (_currentSortType == _titleOfType.Count - 1)
-                    {
-                        _panels[1].SetActive(false);
-                    }
-                    else
-                    {
-                        _panels[0].SetActive(true);
-                    }
+
+                }
+                if (_currentSortType == _titleOfType.Count - 1)
+                {
+                    _panels[1].SetActive(false);
+                }
+                else
+                { 
+                    _panels[0].SetActive(true);
                 }
             }
             else if (dir < 0)
@@ -56,14 +59,16 @@ public class Inventory : MonoBehaviour
                 if (_currentSortType > 0)
                 {
                     _currentSortType--;
-                    if (_currentSortType == 0)
-                    {
-                        _panels[0].SetActive(false);
-                    }
-                    else
-                    {
-                        _panels[1].SetActive(true);
-                    }
+
+
+                }
+                if (_currentSortType == 0)
+                {
+                    _panels[0].SetActive(false);
+                }
+                else
+                {
+                    _panels[1].SetActive(true);
                 }
             }
             if(_currentSortType >= 0 && _currentSortType < _titleOfType.Count)
@@ -103,11 +108,15 @@ public class Inventory : MonoBehaviour
         
     }
 
+    public void OnActionWindowClose(InputAction.CallbackContext context){
+        if(_actionWindow.activeSelf){
+            _actionWindow.SetActive(false);
+        }
+    }
     public void OnActionWindowOpen(InputAction.CallbackContext context)
     {
         if(gameObject.activeSelf && context.performed && _currentOrderItem < _itemsList.Count)
         {
-            _navigate.NumOfWindow = 2;
             _actionWindow.SetActive(true);
         }
 
@@ -126,8 +135,23 @@ public class Inventory : MonoBehaviour
     {
         if (_actionWindow.activeSelf)
         {
-            GlobalEventsSystem.HeathUp();
-            MyDataBase.ExecuteQueryWithoutAnswer($"DELETE FROM Inventory WHERE id = {_itemsList[_currentOrderItem].ID}");
+            string name = _itemsList[_currentOrderItem].NameOfItem;
+            int count = _itemsList[_currentOrderItem].Quantity;
+            if(count > 1){
+                count--;
+                if(name == "Зелье лечения"){
+                    GlobalEventsSystem.HeathUp();
+                    MyDataBase.ExecuteQueryWithoutAnswer($"update Inventory set quantity = {count} where id = {_itemsList[_currentOrderItem].ID}");
+                }
+            }
+            else if(count == 1){
+                count--;
+                if(name == "Зелье лечения"){
+                    GlobalEventsSystem.HeathUp();
+                    MyDataBase.ExecuteQueryWithoutAnswer($"delete from Inventory where id = {_itemsList[_currentOrderItem].ID}");
+                }
+            }
+
             UpdateList();
             ChangeList();
             _actionWindow.SetActive(false);
@@ -137,18 +161,15 @@ public class Inventory : MonoBehaviour
     {
         _itemsList.Clear();
         SqliteDataReader reader = MyDataBase.GetReader($"SELECT * FROM Inventory WHERE type = {_currentSortType + 1} and player = {StaticInformation.id}");
-        if (reader.HasRows)
+        while (reader.Read())
         {
-            while (reader.Read())
-            {
-                int id = Convert.ToInt32(reader["id"].ToString());
-                string name = reader["name"].ToString();
-                int price = Convert.ToInt32(reader["price"].ToString());
-                int quantity = Convert.ToInt32(reader["quantity"].ToString());
-                int type = Convert.ToInt32(reader["quantity"].ToString());
+            int id = Convert.ToInt32(reader["id"].ToString());
+            string name = reader["name"].ToString();
+            int price = Convert.ToInt32(reader["price"].ToString());
+            int quantity = Convert.ToInt32(reader["quantity"].ToString());
+            int type = Convert.ToInt32(reader["type"].ToString());
 
-                _itemsList.Add(new Item(id, name, price, quantity, type));
-            }
+            _itemsList.Add(new Item(id, name, price, quantity, type));
         }
     }
     private void ChangeList()
