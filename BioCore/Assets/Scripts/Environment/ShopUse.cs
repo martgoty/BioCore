@@ -35,17 +35,20 @@ public class ShopUse : MonoBehaviour
     }
 
     public void BuySomething(InputAction.CallbackContext context){
-        if(_canUse){
-            if(Convert.ToInt32(_money.text) >= cost){
-                int count = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select count(quantity) from Inventory where name = \'{nameTovar}\'"));
-                if(count > 0){
-                    count++;
-                    MyDataBase.ExecuteQueryWithoutAnswer($"update Inventory set quantity = {count}");
+        if(context.performed){
+            if(_canUse){
+                if(Convert.ToInt32(_money.text) >= cost){
+                    int count = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select count(quantity) from Inventory where name = \'{nameTovar}\'"));
+                    if(count > 0){
+                        count++;
+                        MyDataBase.ExecuteQueryWithoutAnswer($"update Inventory set quantity = {count}");
+                    }
+                    else{
+                        MyDataBase.ExecuteQueryWithoutAnswer($"insert into Inventory(name, price, quantity, type, player) values(\'{nameTovar}\', {cost}, 1, {type}, {StaticInformation.id})");
+                    }
+                    _money.text = (Convert.ToInt32(_money.text) - cost).ToString();
+
                 }
-                else{
-                    MyDataBase.ExecuteQueryWithoutAnswer($"insert into Inventory(name, price, quantity, type, player) values(\'{nameTovar}\', {cost}, 1, {type}, {StaticInformation.id})");
-                }
-                _money.text = (Convert.ToInt32(_money.text) - cost).ToString();
 
             }
 
