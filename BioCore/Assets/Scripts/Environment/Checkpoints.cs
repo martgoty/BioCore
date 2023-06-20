@@ -13,7 +13,6 @@ public class Checkpoints : MonoBehaviour
             float distance = float.MaxValue;
             foreach (Transform point in _tpPoints)
             {
-                Debug.Log(point.gameObject.name);
                 if(point.GetComponent<PointTrigger>().isActive)
                 {
                     float temp = Mathf.Abs(Mathf.Pow((_player.transform.position.x - point.position.x), 2) + Mathf.Pow((_player.transform.position.y - point.position.y),2));

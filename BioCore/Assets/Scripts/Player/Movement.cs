@@ -13,7 +13,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float _maxFallSpeed;//˜˜˜˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜
     [SerializeField] private PhysicsMaterial2D[] _materials;
     private Rigidbody2D _rigidbody2D;
-    private bool _isGrounded;
+    public bool _isGrounded;
 
     [Header("Ground & Wall Check")]
     [SerializeField][Range(0f, 1f)] private float _groundCheckRadius;

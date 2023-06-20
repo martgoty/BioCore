@@ -5,14 +5,16 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioMusic;
-    [SerializeField] private AudioSource _audioSounds;
+    [SerializeField] private AudioSource[] _audioSounds;
 
     private void Start() {
         if(!PlayerPrefs.HasKey("MusicVolume") && _audioMusic != null){
             _audioMusic.volume = 1;
         }
-        if(!PlayerPrefs.HasKey("SoundsVolume") && _audioSounds != null){
-            _audioSounds.volume = 1;
+        if(!PlayerPrefs.HasKey("SoundsVolume") && _audioSounds.Length > 0){
+            foreach(var audio in _audioSounds){
+                audio.volume = 1;
+            }
         }
         
     }
@@ -20,7 +22,9 @@ public class AudioManager : MonoBehaviour
     private void Update() {
         if(_audioMusic != null)
             _audioMusic.volume = PlayerPrefs.GetFloat("MusicVolume");
-        if(_audioSounds != null)
-            _audioSounds.volume = PlayerPrefs.GetFloat("SoundsVolume");
+        if(_audioSounds.Length > 0){
+            foreach(var audio in _audioSounds)
+            audio.volume = PlayerPrefs.GetFloat("SoundsVolume");
+        }
     }
 }

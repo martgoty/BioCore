@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Collections;
 
 public class Health : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class Health : MonoBehaviour
     [SerializeField] private Image _moneyImage;
     [SerializeField] private TextMeshProUGUI _money;
     [SerializeField] private GameObject[] _uiElements;
+    [SerializeField] private AudioSource _sound;
+    [SerializeField] private Slider _bar;
+    [SerializeField] private GameObject _loadingTxt;
+    [SerializeField] private GameObject _pressTxt;
+    [SerializeField] private GameObject _loading;
     private int _hp;
 
     private void Start()
@@ -53,10 +59,12 @@ public class Health : MonoBehaviour
         if(_hp > 0)
         {
             _hpImage[_hp].color = new Vector4(0f, 0f, 0f, 1f);
+            _sound.Play();
         }
         else
         {
-            SceneManager.LoadScene(1);
+            _loading.SetActive(true);
+            StartCoroutine(Loading(SceneManager.GetActiveScene().buildIndex));
         }
     }
 
@@ -67,6 +75,25 @@ public class Health : MonoBehaviour
             _hpImage[_hp].color = new Vector4(1f, 1f, 1f, 1f);
             _hp++;
             Debug.Log(_hp);
+        }
+    }
+
+    IEnumerator Loading(int level){
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(level);
+        asyncLoad.allowSceneActivation = false;
+        while (!asyncLoad.isDone){
+            _bar.value = asyncLoad.progress;
+            if(asyncLoad.progress >= 0.9f && !asyncLoad.allowSceneActivation){
+                MyDataBase.ExecuteQueryWithoutAnswer("select * from Inventory");
+                _pressTxt.SetActive(true);
+                _loadingTxt.SetActive(false);
+                _bar.value = 1f;
+                if(Input.anyKeyDown){
+                    asyncLoad.allowSceneActivation = true;
+                }
+            }
+
+            yield return null;
         }
     }
 }

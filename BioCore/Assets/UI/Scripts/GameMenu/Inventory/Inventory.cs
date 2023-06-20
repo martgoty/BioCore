@@ -151,7 +151,7 @@ public class Inventory : MonoBehaviour
                     MyDataBase.ExecuteQueryWithoutAnswer($"delete from Inventory where id = {_itemsList[_currentOrderItem].ID}");
                 }
             }
-
+            GetComponent<AudioSource>().Play();
             UpdateList();
             ChangeList();
             _actionWindow.SetActive(false);
