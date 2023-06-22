@@ -13,6 +13,7 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private MenuNavigate _navigate;
+    [SerializeField] private PlayerInput _input;
     [SerializeField] private GameObject[] _visualItems;
     [SerializeField] private GameObject[] _panels;
     [SerializeField] private GameObject _actionWindow;
@@ -30,7 +31,15 @@ public class Inventory : MonoBehaviour
         ChangeList();
         UpdateTitle();
     }
-
+    public void CloseInventoryTab(InputAction.CallbackContext context){
+        if(context.performed){
+            if(gameObject.activeSelf){
+                gameObject.SetActive(false);
+                _input.SwitchCurrentActionMap("Main");
+                Time.timeScale = 1f;
+                }
+        }
+    }
     public void ChangeSortType(InputAction.CallbackContext context)
     {
         float dir = context.ReadValue<float>();

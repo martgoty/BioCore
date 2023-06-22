@@ -30,7 +30,7 @@ public class ScoreCount : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("Player")){
-            MyDataBase.ExecuteQueryWithoutAnswer($"update Logins set Level = {_level + 1}");
+            MyDataBase.ExecuteQueryWithoutAnswer($"update Logins set Level = {_level + 1} where ID = {StaticInformation.id}");
             _scoreBoard.SetActive(true);
             CountScore();
         }
@@ -44,22 +44,24 @@ public class ScoreCount : MonoBehaviour
         _totalScore += 1000f;
     }
     public void CountScore(){
+        _scoreBoardList.Clear();
         _totalScore =_totalScore / (_timer * 1000);
         if(_totalScore <= 0){
             _totalScore = 78f;
         }
-        int count = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select count(ID) from Score where ID = {StaticInformation.id} and Level = {SceneManager.GetActiveScene().buildIndex - 1}"));
-        int currentscore = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select Score from Score where ID = {StaticInformation.id} and Level =  {SceneManager.GetActiveScene().buildIndex - 1}"));
+        int indexScene = SceneManager.GetActiveScene().buildIndex - 1;
+        int count = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select count(ID) from Score where UserID = {StaticInformation.id} and Level = {indexScene}"));
+        int currentscore = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select Score from Score where UserID = {StaticInformation.id} and Level =  {indexScene}"));
         if(currentscore < Convert.ToInt32(_totalScore)){
             if(count > 0){
-                MyDataBase.ExecuteQueryWithoutAnswer($"update Score set Score = {Convert.ToInt32(_totalScore)}");
+                MyDataBase.ExecuteQueryWithoutAnswer($"update Score set Score = {Convert.ToInt32(_totalScore)} where Level = {indexScene} and UserID = {StaticInformation.id}");
             }
             else{
-                MyDataBase.ExecuteQueryWithoutAnswer($"insert into Score(UserID, Level, Score) values({StaticInformation.id}, {SceneManager.GetActiveScene().buildIndex - 1}, {Convert.ToInt32(_totalScore)})");
+                MyDataBase.ExecuteQueryWithoutAnswer($"insert into Score(UserID, Level, Score) values({StaticInformation.id}, {indexScene}, {Convert.ToInt32(_totalScore)})");
             }
 
         }
-        SqliteDataReader reader = MyDataBase.GetReader($"select * from Score where Level = {SceneManager.GetActiveScene().buildIndex - 1}");
+        SqliteDataReader reader = MyDataBase.GetReader($"select * from Score where Level = {indexScene}");
         while(reader.Read()){
             int id = Convert.ToInt32(reader["UserID"]);
             int score = Convert.ToInt32(reader["Score"]);
@@ -78,26 +80,29 @@ public class ScoreCount : MonoBehaviour
         foreach(var score in _scoreBoardList)
         {
             _score.text += $"{score.Score} \n";
-            _nick.text += $"{_loginsList.Find(item => item.Id == score.Id).Name}";
+            _nick.text += $"{_loginsList.Find(item => item.Id == score.Id).Name} \n";
         }
 
         Time.timeScale = 0f;
     }
 
     public void NextLevel(int level){
-        _scoreBoard.SetActive(false);
+        if(_scoreBoard != null){
+
+            _scoreBoard.SetActive(false);
+        }
         _loding.SetActive(true);
         Time.timeScale = 1f;
-        StartCoroutine(Loading(level));
+        StartCoroutine(Loading(level + 1));
     }
 
     IEnumerator Loading(int level){
+        yield return null;
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(level);
         asyncLoad.allowSceneActivation = false;
         while (!asyncLoad.isDone){
             _bar.value = asyncLoad.progress;
             if(asyncLoad.progress >= 0.9f && !asyncLoad.allowSceneActivation){
-                MyDataBase.ExecuteQueryWithoutAnswer("select * from Inventory");
                 _pressTxt.SetActive(true);
                 _loadingTxt.SetActive(false);
                 _bar.value = 1f;

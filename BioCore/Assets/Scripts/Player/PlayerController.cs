@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private GameObject _loading;
     private AudioSource _audio;
     private Movement _movement;//скрипт для передвижения персонажа
     private Animator _animator;
@@ -70,8 +71,14 @@ public class PlayerController : MonoBehaviour
 
     public void OpenChoiseMenu(InputAction.CallbackContext context)
     {
-        _input.SwitchCurrentActionMap("UI");
-        GlobalEventsSystem.OpenMenu();
+        if(context.performed){
+            if(Time.timeScale >= 0.9f && !_loading.activeSelf){
+                _input.SwitchCurrentActionMap("UI");
+                GlobalEventsSystem.OpenMenu();
+        }
+        }
+
+
     }
     #endregion
 
