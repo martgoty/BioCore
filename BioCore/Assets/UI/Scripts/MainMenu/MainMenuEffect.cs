@@ -11,15 +11,16 @@ public class MainMenuEffect : MonoBehaviour
     [SerializeField] private float _speedToHide;
     private Image _image;
 
-    private void Awake()
+    private void Start()
     {
         _image = GetComponent<Image>();
+        Time.timeScale = 1f;
     }
 
     private void Update()
     {
         if(EventSystem.current.currentSelectedGameObject == _button)
-        {
+        {   
             if ((_image.rectTransform.rect.width < _button.GetComponent<RectTransform>().rect.width))
             {
                 _image.rectTransform.sizeDelta = new Vector2(_image.rectTransform.rect.width + _speedToScale * Time.deltaTime, _image.rectTransform.rect.height);

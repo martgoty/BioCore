@@ -20,6 +20,7 @@ public class LevelsSetActive : MonoBehaviour
         int count = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select Level from Logins where ID = {StaticInformation.id}"));
         for(int i = 0; i <= count; i++){
             _buttons[i].GetComponent<Button>().interactable = true;
+            Debug.Log(i);
         }
     }
 

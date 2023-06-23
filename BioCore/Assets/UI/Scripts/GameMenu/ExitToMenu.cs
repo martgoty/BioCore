@@ -7,6 +7,6 @@ public class ExitToMenu : MonoBehaviour
 {
     public void OnMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(7);
     }
 }

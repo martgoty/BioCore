@@ -38,11 +38,11 @@ public class ShopUse : MonoBehaviour
         if(context.performed){
             if(_canUse){
                 if(Convert.ToInt32(_money.text) >= cost){
-                    int count = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select count(id) from Inventory where name = \'{nameTovar}\'"));
+                    int count = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select count(id) from Inventory where name = \'{nameTovar}\' and player = {StaticInformation.id}"));
                     if(count > 0){
-                        int quantity = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select quantity from Inventory where name = \'{nameTovar}\'"));
+                        int quantity = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select quantity from Inventory where name = \'{nameTovar}\' and player = {StaticInformation.id}"));
                         quantity++;
-                        MyDataBase.ExecuteQueryWithoutAnswer($"update Inventory set quantity = {quantity}");
+                        MyDataBase.ExecuteQueryWithoutAnswer($"update Inventory set quantity = {quantity} where player = {StaticInformation.id}");
                     }
                     else{
                         MyDataBase.ExecuteQueryWithoutAnswer($"insert into Inventory(name, price, quantity, type, player) values(\'{nameTovar}\', {cost}, 1, {type}, {StaticInformation.id})");

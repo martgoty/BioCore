@@ -31,6 +31,9 @@ public class Health : MonoBehaviour
         catch{
             money = "0";
         }
+        if(money == null){
+            _money.text = "0";
+        }
         _money.text = money;
 
     }

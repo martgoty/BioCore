@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
 public class MainMenuNavigate : MonoBehaviour
 {
     [SerializeField] GameObject _firstSelected;
     [SerializeField] GameObject _menu;
+    [SerializeField] GameObject _regisrtation;
     [SerializeField] GameObject _setting;
     [SerializeField] GameObject _level;
 
@@ -23,11 +24,18 @@ public class MainMenuNavigate : MonoBehaviour
         }
         
     }
-    public void CloseLevels(){
+    public void CloseLevels(InputAction.CallbackContext context){
+        if(context.performed){
         if(_level.activeSelf){
             _level.SetActive(false);
             _menu.SetActive(true);
         }
+        else if(_menu.activeSelf){
+            _menu.SetActive(false);
+            _regisrtation.SetActive(true);
+        }
+        }
+
     }
     public void OptionsOpen()
     {
@@ -47,7 +55,8 @@ public class MainMenuNavigate : MonoBehaviour
     private void OnEnable()
     {
         // _firstSelected = GameObject.Find("Start");
-        // Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.None;
+        
         // EventSystem.current.SetSelectedGameObject(_firstSelected);
     }
     private void Update()

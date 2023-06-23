@@ -24,6 +24,8 @@ public class Authorization : MonoBehaviour
         {
             int count = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select count(ID) from Logins where Login = \'{_login.text}\' and Password = \'{_password.text}\'"));
             if(count > 0){
+                StaticInformation.login = _login.text;
+                StaticInformation.id = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select ID from Logins where Login = \'{_login.text}\'"));
                 gameObject.SetActive(false);
                 _menu.SetActive(true);
             }
@@ -42,6 +44,9 @@ public class Authorization : MonoBehaviour
             _authorization.SetActive(true);
             _error.text = "";
             _error1.text = "";
+            _login1.text = "";
+            _password1.text = "";
+            _password2.text = "";
         }
     }
 
@@ -50,13 +55,16 @@ public class Authorization : MonoBehaviour
         _authorization.SetActive(false);
         _error.text = "";
         _error1.text = "";
+        _login1.text = "";
+        _password1.text = "";
+        _password2.text = "";
     }
 
     public void Register(){
         if(_login1.text != null && _password1.text != null && _password2.text != null){
             if(_password1.text == _password2.text){
                 if(Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select count(ID) from Logins where Login = \'{_login1.text}\'")) == 0){
-                    MyDataBase.ExecuteQueryWithoutAnswer($"insert into Logins(Login, Password, Level) values (\'{_login1.text}\', \'{_password1.text}\', 0)");
+                    MyDataBase.ExecuteQueryWithoutAnswer($"insert into Logins(Login, Password, Level, Money) values (\'{_login1.text}\', \'{_password1.text}\', 0, 0)");
                     StaticInformation.login = _login1.text;
                     StaticInformation.id = Convert.ToInt32(MyDataBase.ExecuteQueryWithAnswer($"select ID from Logins where Login = \'{_login1.text}\'"));
                     OnBackPressed();

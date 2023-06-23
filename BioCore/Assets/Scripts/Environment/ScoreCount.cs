@@ -21,7 +21,7 @@ public class ScoreCount : MonoBehaviour
     private List<ScoreBoard> _scoreBoardList = new List<ScoreBoard>();
     private List<Logins> _loginsList = new List<Logins>();
     private float _timer = 0f;
-    private float _totalScore = 1000f;
+    private float _totalScore = 100f;
     private void Start() {
         
         GlobalEventsSystem.OnTakeCoin.AddListener(ScoreUp);
@@ -30,6 +30,7 @@ public class ScoreCount : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("Player")){
+            Debug.Log($"update Logins set Level = {_level + 1} where ID = {StaticInformation.id}");
             MyDataBase.ExecuteQueryWithoutAnswer($"update Logins set Level = {_level + 1} where ID = {StaticInformation.id}");
             _scoreBoard.SetActive(true);
             CountScore();
@@ -37,15 +38,15 @@ public class ScoreCount : MonoBehaviour
     }
 
     private void Update(){
-        _timer = Time.deltaTime * 1f;
+        _timer += Time.deltaTime * 1f;
     }
 
     private void ScoreUp(){
-        _totalScore += 1000f;
+        _totalScore += 100f;
     }
     public void CountScore(){
         _scoreBoardList.Clear();
-        _totalScore =_totalScore / (_timer * 1000);
+        _totalScore =_totalScore - _timer;
         if(_totalScore <= 0){
             _totalScore = 78f;
         }
